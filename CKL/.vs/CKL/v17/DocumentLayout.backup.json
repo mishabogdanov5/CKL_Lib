@@ -1,0 +1,95 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B3CCFFA8-1E90-409D-998E-A23ED3D45A42}|..\\CKLTests\\CKLTests.csproj|c:\\users\\79136\\source\\repos\\projects\\ckl studio\\ckl library\\ckl\\ckltests\\cklmathtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|c:\\users\\79136\\source\\repos\\projects\\ckl studio\\ckl library\\ckl\\ckl\\ckl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|solutionrelative:ckl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|c:\\users\\79136\\source\\repos\\projects\\ckl studio\\ckl library\\ckl\\ckl\\cklmath.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|solutionrelative:cklmath.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|c:\\users\\79136\\source\\repos\\projects\\ckl studio\\ckl library\\ckl\\ckl\\relationitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A32605A5-4D49-48F9-BFA5-CF16ABA1D8B2}|CKL.csproj|solutionrelative:relationitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CKLMathTest.cs",
+              "DocumentMoniker": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLMathTest.cs",
+              "RelativeDocumentMoniker": "..\\CKLTests\\CKLMathTest.cs",
+              "ToolTip": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLMathTest.cs",
+              "RelativeToolTip": "..\\CKLTests\\CKLMathTest.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAADwv3kAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T21:46:03.621Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CKLMath.cs",
+              "DocumentMoniker": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKLMath.cs",
+              "RelativeDocumentMoniker": "CKLMath.cs",
+              "ToolTip": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKLMath.cs*",
+              "RelativeToolTip": "CKLMath.cs*",
+              "ViewState": "AgIAADQAAAAAAAAAAAAgwD0AAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T21:25:45.2Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RelationItem.cs",
+              "DocumentMoniker": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\RelationItem.cs",
+              "RelativeDocumentMoniker": "RelationItem.cs",
+              "ToolTip": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\RelationItem.cs",
+              "RelativeToolTip": "RelationItem.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAD4vxAAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T21:20:41.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CKL.cs",
+              "DocumentMoniker": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.cs",
+              "RelativeDocumentMoniker": "CKL.cs",
+              "ToolTip": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.cs",
+              "RelativeToolTip": "CKL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T21:18:02.233Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
