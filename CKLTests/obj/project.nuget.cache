@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hHVMGqqTac4=",
+  "dgSpecHash": "7Oq+ZmJqzPE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLTests.csproj",
+  "projectFilePath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\CKLTests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\79136\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\79136\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",

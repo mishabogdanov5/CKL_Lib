@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLTests.csproj": {}
+    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\CKLTests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLTests.csproj": {
+    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\CKLTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLTests.csproj",
+        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\CKLTests.csproj",
         "projectName": "CKLTests",
-        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\CKLTests.csproj",
+        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\CKLTests.csproj",
         "packagesPath": "C:\\Users\\79136\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKLTests\\obj\\",
+        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.csproj": {
-                "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.csproj"
+              "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\CKL.csproj": {
+                "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\CKL.csproj"
               }
             }
           }
@@ -91,14 +91,14 @@
         }
       }
     },
-    "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.csproj": {
+    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\CKL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.csproj",
+        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\CKL.csproj",
         "projectName": "CKL",
-        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\CKL.csproj",
+        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\CKL.csproj",
         "packagesPath": "C:\\Users\\79136\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL Studio\\CKL Library\\CKL\\CKL\\obj\\",
+        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
