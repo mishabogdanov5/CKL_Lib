@@ -1,5 +1,5 @@
 
-namespace CKLK
+namespace CKL
 {
     public class CKL
     {
