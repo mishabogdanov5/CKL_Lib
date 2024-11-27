@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLK\\CKLK.csproj": {}
+    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\WpfLibrary1\\WpfLibrary1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLK\\CKLK.csproj": {
+    "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\WpfLibrary1\\WpfLibrary1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLK\\CKLK.csproj",
-        "projectName": "CKLK",
-        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLK\\CKLK.csproj",
+        "projectUniqueName": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\WpfLibrary1\\WpfLibrary1.csproj",
+        "projectName": "WpfLibrary1",
+        "projectPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\WpfLibrary1\\WpfLibrary1.csproj",
         "packagesPath": "C:\\Users\\79136\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKLK\\obj\\",
+        "outputPath": "C:\\Users\\79136\\source\\repos\\Projects\\CKL_Studio\\CKL_Library\\CKL\\CKL\\WpfLibrary1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

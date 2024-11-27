@@ -1,0 +1,12 @@
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\bin\Debug\net8.0-windows\CKLLib.deps.json
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\bin\Debug\net8.0-windows\CKLLib.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\bin\Debug\net8.0-windows\CKLLib.pdb
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.AssemblyInfoInputs.cache
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.AssemblyInfo.cs
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.csproj.CoreCompileInputs.cache
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.sourcelink.json
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\refint\CKLLib.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\CKLLib.pdb
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKL\WpfLibrary1\obj\Debug\net8.0-windows\ref\CKLLib.dll

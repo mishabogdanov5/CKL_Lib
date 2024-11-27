@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CKL
+namespace CKLLib
 {
     public class RelationItem
     {
@@ -12,14 +12,14 @@ namespace CKL
         public DateTime[] StartTimes { get; private set; }
         public DateTime[] EndTimes { get; private set; }
 
-        public RelationItem() 
+        public RelationItem()
         {
             Value = new object[2];
-            StartTimes = new DateTime[0];
-            EndTimes = new DateTime[0];
+            StartTimes = Array.Empty<DateTime>();
+            EndTimes = Array.Empty<DateTime>();
         }
 
-        public RelationItem(object[] value, DateTime[] startTimes, DateTime[] endTimes) 
+        public RelationItem(object[] value, DateTime[] startTimes, DateTime[] endTimes)
         {
             Value = value;
             StartTimes = startTimes;

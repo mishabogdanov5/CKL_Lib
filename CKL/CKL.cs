@@ -1,7 +1,5 @@
 
-using System.Runtime.InteropServices.ObjectiveC;
-
-namespace CKL
+namespace CKLLib
 {
     public class CKL
     {
@@ -12,17 +10,17 @@ namespace CKL
         public HashSet<object>? B { get; private set; }
         public HashSet<RelationItem> Relation { get; private set; }
 
-        public CKL() 
+        public CKL()
         {
             Name = string.Empty;
             StartTime = DateTime.MinValue;
             EndTime = DateTime.MaxValue;
             A = new HashSet<object>();
             B = new HashSet<object>();
-            RelationItem = new HashSet<RelationItem>();
+            Relation = new HashSet<RelationItem>();
         }
-        
-        public CKL(string name, DateTime startTime, DateTime endTime, HashSet<object> a, HashSet<RelationItem> relation) 
+
+        public CKL(string name, DateTime startTime, DateTime endTime, HashSet<object> a, HashSet<RelationItem> relation)
         {
             Name = string.Empty;
             StartTime = startTime;
