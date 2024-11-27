@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("CKLK")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("WpfLibrary1")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51c880b447badbc0b97e9f89313fb57520f734cb")]
-[assembly: System.Reflection.AssemblyProductAttribute("CKLK")]
-[assembly: System.Reflection.AssemblyTitleAttribute("CKLK")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6934ee385dccfde5bc316d37b0312e2e338222b")]
+[assembly: System.Reflection.AssemblyProductAttribute("WpfLibrary1")]
+[assembly: System.Reflection.AssemblyTitleAttribute("WpfLibrary1")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
