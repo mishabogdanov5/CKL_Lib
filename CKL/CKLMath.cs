@@ -10,6 +10,7 @@ namespace CKLLib
     {
         public static class CKLMath
         {
+            //TimeOperations
             public static CKL TimeTransform(CKL ckl, DateTime newStartTime, DateTime newEndTime)
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
@@ -47,7 +48,37 @@ namespace CKLLib
                         sTimes.ToArray(), eTimes.ToArray()));
                 }
 
-                return new CKL(ckl.Name, newStartTime, newEndTime, ckl.A, ckl.B, items);
+                return new CKL(ckl.Name, newStartTime, newEndTime, ckl.Source, items);
+            }
+
+
+
+            //Source operations
+
+            public static CKL SourceConstriction(CKL ckl, Func<object, bool > selector)
+            {
+                if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+                HashSet<object> newSource = new HashSet<object>();
+                HashSet<RelationItem> newRelation = new HashSet<RelationItem>();
+
+                foreach (RelationItem item in ckl.Relation) 
+                {
+                    if (selector(item.Value)) 
+                    {
+                        newSource.Add(item.Value);
+                        newRelation.Add(item);
+                    }
+                }
+
+                return new CKL(ckl.Name, ckl.StartTime, ckl.EndTime, newSource, newRelation);
+            }
+
+            public static CKL SourceExpansion(CKL ckl, IEnumerable<object> expansion) 
+            {
+                HashSet<object> newSource = ckl.Source.Concat(expansion).ToHashSet();
+
+                return new CKL(ckl.Name, ckl.StartTime, ckl.EndTime, newSource, ckl.Relation);
             }
         }
     }
