@@ -8,7 +8,7 @@ namespace CKLLib
 {
     public class RelationItem
     {
-        public object[] Value { get; private set; }
+        public object Value { get; private set; }
         public DateTime[] StartTimes { get; private set; }
         public DateTime[] EndTimes { get; private set; }
 
@@ -19,7 +19,7 @@ namespace CKLLib
             EndTimes = Array.Empty<DateTime>();
         }
 
-        public RelationItem(object[] value, DateTime[] startTimes, DateTime[] endTimes)
+        public RelationItem(object value, DateTime[] startTimes, DateTime[] endTimes)
         {
             Value = value;
             StartTimes = startTimes;
