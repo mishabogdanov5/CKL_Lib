@@ -1,0 +1,16 @@
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.AssemblyInfoInputs.cache
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.AssemblyInfo.cs
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.csproj.CoreCompileInputs.cache
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.sourcelink.json
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\bin\Debug\net8.0-windows\CKLDrawing.deps.json
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\bin\Debug\net8.0-windows\CKLDrawing.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\bin\Debug\net8.0-windows\CKLDrawing.pdb
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\bin\Debug\net8.0-windows\CKLLib.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\bin\Debug\net8.0-windows\CKLLib.pdb
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.csproj.AssemblyReference.cache
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.csproj.Up2Date
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\refint\CKLDrawing.dll
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\CKLDrawing.pdb
+C:\Users\79136\source\repos\Projects\CKL_Studio\CKL_Library\CKL\CKLDrawing\obj\Debug\net8.0-windows\ref\CKLDrawing.dll
