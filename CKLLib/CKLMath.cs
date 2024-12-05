@@ -103,7 +103,7 @@ namespace CKLLib
                 if (ckl2 == null)
                     throw new ArgumentNullException($"second argument can not be null");
 
-
+                
             }
         }
     }
