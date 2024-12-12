@@ -15,8 +15,8 @@ namespace CKLLib
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                DateTime st = newStartTime.CompareTo(ckl.StartTime) >= 0 ? newStartTime : ckl.StartTime;
-                DateTime et = newEndTime.CompareTo(ckl.EndTime) >= 0 ? ckl.EndTime : newEndTime;
+                DateTime st = newStartTime.CompareTo(ckl.GlobalInterval.StartTime) >= 0 ? newStartTime : ckl.GlobalInterval.StartTime;
+                DateTime et = newEndTime.CompareTo(ckl.GlobalInterval.EndTime) >= 0 ? ckl.GlobalInterval.EndTime : newEndTime;
 
                 HashSet<RelationItem> items = new HashSet<RelationItem>();
                 List<TimeInterval> timeIntervals = new List<TimeInterval>();
@@ -44,7 +44,7 @@ namespace CKLLib
                         timeIntervals.ToArray()));
                 }
 
-                return new CKL(ckl.Name, newStartTime, newEndTime, ckl.Source, items);
+                return new CKL(ckl.Name, new TimeInterval(newStartTime, newEndTime), ckl.Source, items);
             }
 
 
@@ -67,7 +67,7 @@ namespace CKLLib
                     }
                 }
 
-                return new CKL(ckl.Name, ckl.StartTime, ckl.EndTime, newSource, newRelation);
+                return new CKL(ckl.Name, ckl.GlobalInterval, newSource, newRelation);
             }
 
             public static CKL SourceExpansion(CKL ckl, IEnumerable<object> expansion)
@@ -76,12 +76,12 @@ namespace CKLLib
 
                 HashSet<object> newSource = ckl.Source.Concat(expansion).ToHashSet();
 
-                return new CKL(ckl.Name, ckl.StartTime, ckl.EndTime, newSource, ckl.Relation);
+                return new CKL(ckl.Name, ckl.GlobalInterval, newSource, ckl.Relation);
             }
 
             //CKL source operations
 
-            private static DateTime[] TimeMinus(DateTime startTime1, DateTime endTime1, DateTime startTime2, DateTime endTime2)
+            /*private static DateTime[] TimeMinus(DateTime startTime1, DateTime endTime1, DateTime startTime2, DateTime endTime2)
             {
 
             }
@@ -104,7 +104,7 @@ namespace CKLLib
                     throw new ArgumentNullException($"second argument can not be null");
 
                 
-            }
+            }*/
         }
     }
 }

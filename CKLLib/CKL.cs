@@ -9,25 +9,22 @@ namespace CKLLib
     public class CKL
     {
         public string Name { get; set; }
-        public DateTime StartTime { get; private set; }
-        public DateTime EndTime { get; private set; }
+        public TimeInterval GlobalInterval { get; internal set; }
         public HashSet<object> Source { get; private set; }
         public HashSet<RelationItem> Relation { get; private set; }
 
         public CKL()
         {
             Name = string.Empty;
-            StartTime = DateTime.MinValue;
-            EndTime = DateTime.MaxValue;
+            GlobalInterval = new TimeInterval(DateTime.Now, DateTime.Now);
             Source = new HashSet<object>();
             Relation = new HashSet<RelationItem>();
         }
 
-        public CKL(string name, DateTime startTime, DateTime endTime, HashSet<object> source, HashSet<RelationItem> relation)
+        public CKL(string name, TimeInterval timeInterval, HashSet<object> source, HashSet<RelationItem> relation)
         {
             Name = name;
-            StartTime = startTime;
-            EndTime = endTime;
+            GlobalInterval = timeInterval;
             Source = source;
             Relation = relation;
         }

@@ -11,6 +11,7 @@ namespace CKLLib
     {
         public object Value { get; private set; }
         public TimeInterval[] Intervals { get; private set; }
+        public object? Info { get; set; }
 
         public RelationItem()
         {
@@ -24,6 +25,11 @@ namespace CKLLib
 
             Array.Sort(intervals, new TimeIntervalsComparer());
             Intervals = intervals;
+        }
+
+        public RelationItem(object value, TimeInterval[] intervals, object? info) : this(value, intervals)
+        {
+            Info = info;
         }
 
         public override bool Equals(object? obj)
