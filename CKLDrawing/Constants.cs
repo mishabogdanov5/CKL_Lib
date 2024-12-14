@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 
@@ -12,19 +13,39 @@ namespace CKLDrawing
 {
     internal static class Constants
     {
-        public static class Colors 
+        public static class DefaultColors 
         {
             public static readonly Brush INTERVAL_ITEM_COLOR = new SolidColorBrush(Color.FromRgb(119, 139, 235));
             public static readonly Brush INTERVAL_ITEM_ACTIVE_COLOR = new SolidColorBrush(Color.FromRgb(51, 76, 190));
             public static readonly Brush INTERVAL_ITEM_BORDER_COLOR = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             public static readonly Brush EMPTY_INTERVAL_COLOR = new SolidColorBrush(Color.FromRgb(235, 134, 134));
-            public static readonly Brush CHAIN_COLOR = new SolidColorBrush(Color.FromRgb(68, 68, 68));
+            public static readonly Brush CKL_BACKGROUND = new SolidColorBrush(Color.FromRgb(68, 68, 68));
+            public static readonly Brush SECTION_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            public static readonly Brush TIME_OX_COLOR = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+            public static readonly Brush VALUE_COLOR = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         }
 
         public static class Dimentions 
         {
-            public static readonly double LINE_HEIGHT = 8;
+            public static readonly double LINE_HEIGHT = 3;
             public static readonly double INTERVAL_BORDER_SIZE = 3;
+            public static readonly double CHAIN_HEIGHT = 80;
+            public static readonly double CKL_WIDTH = 1600;
+            public static readonly Thickness CHAIN_MARGIN = new Thickness(200, 0, 0, 10);
+            public static readonly Thickness TIME_OX_MARGIN = new Thickness(200, 0, 0, 20);
+            public static readonly double VALUE_BOX_WIDTH = 150;
+            public static readonly double SECTION_WIDTH = 2.5;
+            public static readonly double SECTION_HEIGHT = 12.5;
+            public static readonly double TIME_OX_HEIGHT = 100;
+            public static readonly double DEL_WIDTH = 25;
+            public static readonly double OX_FREE_INTERVAL = 30;
+            public static readonly double SECTIONS_TEXT_HEIGHT = 25;
+            public static readonly double TEXT_SIZE = 11;
         }
+
+        public static readonly string[] TIME_DIMENTIONS_STRINGS = new string[] {"нс", "мкс", "мс", "с", 
+            "м", "ч", "д", "м", "г"};
+
+        public static readonly int[] TIME_DIMENTIONS_CONVERT = new int[] { 1000, 1000, 1000, 60, 60, 24, 30, 12  };
     }
 }
