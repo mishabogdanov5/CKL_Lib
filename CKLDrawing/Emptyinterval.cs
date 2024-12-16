@@ -10,7 +10,7 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-    internal class Emptyinterval: Button
+    public class Emptyinterval: Button
     {
         public TimeInterval Duration { get => _duration; private set { } }
 		new public Chain? Parent { get; }
@@ -19,7 +19,7 @@ namespace CKLDrawing
         
         private void SetDefault() 
         {
-            Background = Constants.Colors.EMPTY_INTERVAL_COLOR;
+            Background = Constants.DefaultColors.EMPTY_INTERVAL_COLOR;
             Height = Constants.Dimentions.LINE_HEIGHT;
             BorderThickness = new Thickness(0,0,0,0);
         }
@@ -29,5 +29,5 @@ namespace CKLDrawing
             _duration = duraction;
             SetDefault();
         }
-    }
+	}
 }

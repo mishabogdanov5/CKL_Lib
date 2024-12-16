@@ -11,12 +11,12 @@ namespace CKLLib
         public static class CKLMath
         {
             //TimeOperations
-            public static CKL TimeTransform(CKL ckl, DateTime newStartTime, DateTime newEndTime)
+            public static CKL TimeTransform(CKL ckl, TimeInterval newInterval)
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                DateTime st = newStartTime.CompareTo(ckl.GlobalInterval.StartTime) >= 0 ? newStartTime : ckl.GlobalInterval.StartTime;
-                DateTime et = newEndTime.CompareTo(ckl.GlobalInterval.EndTime) >= 0 ? ckl.GlobalInterval.EndTime : newEndTime;
+                DateTime st = newInterval.StartTime.CompareTo(ckl.GlobalInterval.StartTime) >= 0 ? newInterval.StartTime : ckl.GlobalInterval.StartTime;
+                DateTime et = newInterval.EndTime.CompareTo(ckl.GlobalInterval.EndTime) >= 0 ? ckl.GlobalInterval.EndTime : newInterval.EndTime;
 
                 HashSet<RelationItem> items = new HashSet<RelationItem>();
                 List<TimeInterval> timeIntervals = new List<TimeInterval>();
@@ -44,7 +44,7 @@ namespace CKLLib
                         timeIntervals.ToArray()));
                 }
 
-                return new CKL(ckl.Name, new TimeInterval(newStartTime, newEndTime), ckl.Source, items);
+                return new CKL(ckl.FilePath, ckl.Name, newInterval, ckl.Source, items);
             }
 
 
@@ -67,7 +67,7 @@ namespace CKLLib
                     }
                 }
 
-                return new CKL(ckl.Name, ckl.GlobalInterval, newSource, newRelation);
+                return new CKL(ckl.FilePath, ckl.Name, ckl.GlobalInterval, newSource, newRelation);
             }
 
             public static CKL SourceExpansion(CKL ckl, IEnumerable<object> expansion)
@@ -76,7 +76,7 @@ namespace CKLLib
 
                 HashSet<object> newSource = ckl.Source.Concat(expansion).ToHashSet();
 
-                return new CKL(ckl.Name, ckl.GlobalInterval, newSource, ckl.Relation);
+                return new CKL(ckl.FilePath, ckl.Name, ckl.GlobalInterval, newSource, ckl.Relation);
             }
 
             //CKL source operations

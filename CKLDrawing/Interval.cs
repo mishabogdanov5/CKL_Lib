@@ -5,7 +5,7 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-    internal class Interval : Button
+    public class Interval : Button
     {
         public TimeInterval CurrentInterval { get => _interval; }
         public bool IsActive { get; }
@@ -18,21 +18,21 @@ namespace CKLDrawing
 
         private void SetDefault()
         {
-            Background = Constants.Colors.INTERVAL_ITEM_COLOR;
+            Background = Constants.DefaultColors.INTERVAL_ITEM_COLOR;
             _isActive = false;
-            BorderBrush = Constants.Colors.INTERVAL_ITEM_BORDER_COLOR;
+            BorderBrush = Constants.DefaultColors.INTERVAL_ITEM_BORDER_COLOR;
 			BorderThickness = new Thickness(0);
 			
             Click += (object sender, RoutedEventArgs e) => 
             {
                 if (!_isActive)
                 {
-                    Background = Constants.Colors.INTERVAL_ITEM_ACTIVE_COLOR;
+                    Background = Constants.DefaultColors.INTERVAL_ITEM_ACTIVE_COLOR;
                     BorderThickness = new Thickness(Constants.Dimentions.INTERVAL_BORDER_SIZE);
                 }
                 else 
                 {
-					Background = Constants.Colors.INTERVAL_ITEM_COLOR;
+					Background = Constants.DefaultColors.INTERVAL_ITEM_COLOR;
                     BorderThickness = new Thickness(0);
 				}
 

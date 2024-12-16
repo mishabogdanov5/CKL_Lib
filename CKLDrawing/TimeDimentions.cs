@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CKLDrawing
 {
-	internal enum TimeDimentions
+	public enum TimeDimentions
 	{
 		NANOSECONDS,
 		MICROSECONDS,
