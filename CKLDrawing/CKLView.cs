@@ -4,21 +4,31 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using CKLLib;
 
 namespace CKLDrawing
 {
-	public class CKLView: DockPanel
+	public class CKLView: StackPanel
 	{
 		public CKL Ckl { get => _ckl;  }
 		public List<Chain> Chains { get => _chains; }
 		public TimeOx TimeScale { get => _timeScale; }
 		
+		public StackPanel ListView { get => _listView; }
+		public StackPanel MainView { get => _mainView; }
+		public StackPanel Content { get => _content; }
+		public ScrollViewer ScrollView { get => _scrollView; }
+
 		private CKL _ckl;
 		private List<Chain> _chains;
 		private TimeOx _timeScale;
-
+		private StackPanel _listView;
+		private StackPanel _mainView;
+		private StackPanel _content;
+		private ScrollViewer _scrollView;
+		
 		public CKLView(CKL ckl) 
 		{
 			_ckl = ckl;
@@ -31,16 +41,45 @@ namespace CKLDrawing
 			Background = Constants.DefaultColors.CKL_BACKGROUND;
 			
 			_chains = new List<Chain>();
+			
+			_listView = new StackPanel();
+			_listView.Background = Background;
+			_listView.Orientation = Orientation.Vertical;
+
+			_mainView = new StackPanel();
+			_mainView.Background = Background;
+			_mainView.Orientation = Orientation.Vertical;
+
+			_content = new StackPanel();
+			_content.Background = Background;
+			_content.Orientation = Orientation.Horizontal;
+
+			_scrollView = new ScrollViewer();
+			_scrollView.Background = Background;
+			_scrollView.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+			_scrollView.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
 			DrawOx();
 			DrawChains();
+
+			_content.Children.Add(_mainView);
+
+			_scrollView.Content = _content;
+			
+			Children.Add(_scrollView);
 		}
 
 		private void DrawOx() 
 		{
-			_timeScale = new TimeOx(_ckl.GlobalInterval, GetTimeDimention());
-			DockPanel.SetDock(_timeScale, Dock.Top);
-			Children.Add(_timeScale);
+			TimeDimentions dim = GetTimeDimention();
+			
+			_timeScale = new TimeOx(_ckl.GlobalInterval, dim);
+			_mainView.Children.Add(_timeScale);
+
+			_listView.Children.Add(new ValueBox
+				($"{_timeScale.DelCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)dim]}")
+			{ Height = _timeScale.Height});
+		
 		}
 
 		private TimeDimentions GetTimeDimention() 
@@ -64,14 +103,14 @@ namespace CKLDrawing
 			{
 				Chain chain = new Chain(item, Ckl.GlobalInterval, _timeScale.Width);
 				AddChain(chain);
+
+				_listView.Children.Add(new ValueBox(item.Value));
 			}
 		}
 
 		private void AddChain(Chain chain) 
 		{
-			DockPanel.SetDock(chain, Dock.Top);
-			
-			Children.Add(chain);
+			_mainView.Children.Add(chain);
 			_chains.Add(chain);
 		}
 	}

@@ -34,7 +34,7 @@ namespace CKLDrawing
             
             _intervals = new List<Interval>();
 			_emptyintervals = new List<Emptyinterval>();
-            SetValue();
+            //SetValue();
             FillIntervals();
         }
 
@@ -45,15 +45,15 @@ namespace CKLDrawing
 
             Children.Add(_box);
 
-            _width = Width - (Constants.Dimentions.VALUE_BOX_WIDTH + 
-                Constants.Dimentions.OX_FREE_INTERVAL);
+            _width = Width //- (Constants.Dimentions.VALUE_BOX_WIDTH + 
+               /* Constants.Dimentions.OX_FREE_INTERVAL)*/;
         }
 
         private double _width;
 
         private void FillIntervals()
         {
-
+            _width = Width - Constants.Dimentions.OX_FREE_INTERVAL - 20;
             List<Pair> pairs = new List<Pair>();
 
             foreach (TimeInterval interval in _item.Intervals)
@@ -99,6 +99,7 @@ namespace CKLDrawing
                 {
                     double starterLineWidth = _width * (Convert.ToDouble(coordinates[i].FirstValue));
                     Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime));
+                    line.Margin = new Thickness(Constants.Dimentions.FIRST_DEL_START,0,0,0);
                     LineSetUp(line, starterLineWidth);
                     AddEmptyInterval(line);
                 }

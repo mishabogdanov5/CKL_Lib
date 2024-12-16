@@ -31,8 +31,8 @@ namespace CKLDrawing
             public static readonly double INTERVAL_BORDER_SIZE = 3;
             public static readonly double CHAIN_HEIGHT = 80;
             public static readonly double CKL_WIDTH = 1600;
-            public static readonly Thickness CHAIN_MARGIN = new Thickness(200, 0, 0, 10);
-            public static readonly Thickness TIME_OX_MARGIN = new Thickness(200, 0, 0, 20);
+            public static readonly Thickness CHAIN_MARGIN = new Thickness(10, 0, 0, 10);
+            public static readonly Thickness TIME_OX_MARGIN = new Thickness(10, 0, 0, 10);
             public static readonly double VALUE_BOX_WIDTH = 150;
             public static readonly double SECTION_WIDTH = 2.5;
             public static readonly double SECTION_HEIGHT = 12.5;
@@ -41,6 +41,7 @@ namespace CKLDrawing
             public static readonly double OX_FREE_INTERVAL = 30;
             public static readonly double SECTIONS_TEXT_HEIGHT = 25;
             public static readonly double TEXT_SIZE = 11;
+            public static readonly double FIRST_DEL_START = 20;
         }
 
         public static readonly string[] TIME_DIMENTIONS_STRINGS = new string[] {"нс", "мкс", "мс", "с", 

@@ -28,12 +28,6 @@ namespace CKLDrawing
         {
             _duration = duraction;
             SetDefault();
-			Click += Emptyinterval_Click;
         }
-
-		private void Emptyinterval_Click(object sender, RoutedEventArgs e)
-		{
-            MessageBox.Show(Width.ToString());
-		}
 	}
 }

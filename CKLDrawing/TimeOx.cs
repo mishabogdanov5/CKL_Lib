@@ -41,11 +41,12 @@ namespace CKLDrawing
             Height = Constants.Dimentions.TIME_OX_HEIGHT;
             Margin = Constants.Dimentions.TIME_OX_MARGIN;
 
+
             _sections = new List<Section>();
 
             SetUpTextCanvas();
 
-            SetDelCoastText();
+            //SetDelCoastText();
 			FillOx();
             DrawOX();
         }
@@ -78,11 +79,10 @@ namespace CKLDrawing
         {
             Button ox = new Button();
             ox.Background = Constants.DefaultColors.SECTION_COLOR;
-			ox.Width = Width - (Constants.Dimentions.OX_FREE_INTERVAL + Constants.Dimentions.VALUE_BOX_WIDTH) 
-                + Constants.Dimentions.SECTION_WIDTH;
+            ox.Width = Width;
 			ox.Height = Constants.Dimentions.SECTION_WIDTH;
             ox.BorderThickness = new Thickness(0);
-            Canvas.SetLeft(ox, Constants.Dimentions.VALUE_BOX_WIDTH);
+            Canvas.SetLeft(ox, /*Constants.Dimentions.VALUE_BOX_WIDTH*/ 0);
             Canvas.SetTop(ox, Constants.Dimentions.TIME_OX_HEIGHT/2);
 
             Children.Add(ox);
@@ -91,7 +91,7 @@ namespace CKLDrawing
 
         private void FillOx() 
         {
-            double startPos = Constants.Dimentions.VALUE_BOX_WIDTH - Constants.Dimentions.SECTION_WIDTH/2;
+            double startPos = Constants.Dimentions.FIRST_DEL_START;
             double sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
 
             double total = GetTotalDimention();

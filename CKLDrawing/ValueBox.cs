@@ -31,6 +31,7 @@ namespace CKLDrawing
 			Foreground = Constants.DefaultColors.VALUE_COLOR;
 			BorderThickness = new Thickness(Constants.Dimentions.SECTION_WIDTH);
 			BorderBrush = Constants.DefaultColors.INTERVAL_ITEM_BORDER_COLOR;
+			Margin = Constants.Dimentions.CHAIN_MARGIN;
 		}
 	}
 }
