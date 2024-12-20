@@ -18,7 +18,7 @@ namespace CKLLib
         {
             FilePath = filePath;
             Name = string.Empty;
-            GlobalInterval = new TimeInterval(DateTime.Now, DateTime.Now);
+            GlobalInterval = new TimeInterval(0, 0, TimeDimentions.SECONDS);
             Source = new HashSet<object>();
             Relation = new HashSet<RelationItem>();
         }

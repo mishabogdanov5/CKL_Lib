@@ -28,7 +28,7 @@ namespace CKLDrawing
                 if (!_isActive)
                 {
                     Background = Constants.DefaultColors.INTERVAL_ITEM_ACTIVE_COLOR;
-                    BorderThickness = new Thickness(Constants.Dimentions.INTERVAL_BORDER_SIZE);
+                    BorderThickness = Constants.Dimentions.INTERVAL_BORDER_SIZE;
                 }
                 else 
                 {

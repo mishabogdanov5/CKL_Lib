@@ -28,19 +28,19 @@ namespace CKLDrawing
         public static class Dimentions 
         {
             public static readonly double LINE_HEIGHT = 3;
-            public static readonly double INTERVAL_BORDER_SIZE = 3;
-            public static readonly double CHAIN_HEIGHT = 80;
+            public static readonly Thickness INTERVAL_BORDER_SIZE = new Thickness(2);
+            public static readonly double CHAIN_HEIGHT = 35;
             public static readonly double CKL_WIDTH = 1600;
             public static readonly Thickness CHAIN_MARGIN = new Thickness(10, 0, 0, 10);
-            public static readonly Thickness TIME_OX_MARGIN = new Thickness(10, 0, 0, 10);
-            public static readonly double VALUE_BOX_WIDTH = 150;
+            public static readonly Thickness TIME_OX_MARGIN = new Thickness(10, 0, 0, 5);
+            public static readonly double VALUE_BOX_WIDTH = 100;
             public static readonly double SECTION_WIDTH = 2.5;
-            public static readonly double SECTION_HEIGHT = 12.5;
-            public static readonly double TIME_OX_HEIGHT = 100;
-            public static readonly double DEL_WIDTH = 25;
+            public static readonly double SECTION_HEIGHT = 9;
+            public static readonly double TIME_OX_HEIGHT = 70;
+            public static readonly double DEL_WIDTH = 20;
             public static readonly double OX_FREE_INTERVAL = 30;
-            public static readonly double SECTIONS_TEXT_HEIGHT = 25;
-            public static readonly double TEXT_SIZE = 11;
+            public static readonly double SECTIONS_TEXT_HEIGHT = 20;
+            public static readonly double TEXT_SIZE = 10;
             public static readonly double FIRST_DEL_START = 20;
         }
 

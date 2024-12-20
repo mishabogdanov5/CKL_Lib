@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CKLDrawing
+namespace CKLLib
 {
 	public enum TimeDimentions
 	{
@@ -13,9 +13,6 @@ namespace CKLDrawing
 		MILLISECONDS,
 		SECONDS,
 		MINUTES,
-		HOURS,
-		DAYS,
-		MONTH,
-		YEARS
+		WEEKS
 	}
 }

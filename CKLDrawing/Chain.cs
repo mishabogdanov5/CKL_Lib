@@ -79,7 +79,7 @@ namespace CKLDrawing
                         + Constants.Dimentions.SECTION_WIDTH;
 
 					currentRect = new Interval(_item.Intervals[i]);
-					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, _interval.EndTime));
+					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, _interval.EndTime, _interval.Dimention));
 				}
 
                 else
@@ -92,13 +92,13 @@ namespace CKLDrawing
 
 					currentRect = new Interval(_item.Intervals[i]);
 					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, 
-                        _item.Intervals[i + 1].StartTime));
+                        _item.Intervals[i + 1].StartTime, _interval.Dimention));
 				}
 
                 if (i == 0)
                 {
                     double starterLineWidth = _width * (Convert.ToDouble(coordinates[i].FirstValue));
-                    Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime));
+                    Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime, _interval.Dimention));
                     line.Margin = new Thickness(Constants.Dimentions.FIRST_DEL_START,0,0,0);
                     LineSetUp(line, starterLineWidth);
                     AddEmptyInterval(line);
@@ -137,11 +137,11 @@ namespace CKLDrawing
 
         private Pair GetCoordinatesFromTimeInterval(TimeInterval interval) 
         {
-            TimeSpan vectorBegin = interval.StartTime - _interval.StartTime;
-            TimeSpan vectorEnd = interval.EndTime - _interval.StartTime;
+            double vectorBegin = interval.StartTime - _interval.StartTime;
+            double vectorEnd = interval.EndTime - _interval.StartTime;
  
-            double start = vectorBegin.TotalNanoseconds / _interval.Duration.TotalNanoseconds;
-            double end = vectorEnd.TotalNanoseconds / _interval.Duration.TotalNanoseconds;
+            double start = vectorBegin / _interval.Duration;
+            double end = vectorEnd / _interval.Duration;
 
             return new Pair(start, end);
         }

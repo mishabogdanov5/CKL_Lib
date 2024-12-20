@@ -6,23 +6,38 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using CKLLib;
+using System.Windows.Automation.Provider;
 namespace CKLDrawing
 {
 	public class ValueBox: Button
 	{
-		public object Value { get => _value;  }
-		
-		private object _value;
+		public Chain? CurrentChain { get => _chain; }
+		public RelationItem? Item { get => _item; }
+		public object Info { get => _info; }
 
-		public ValueBox(object value) : base() 
+		private Chain _chain;
+		private RelationItem _item;
+		private object _info;
+		public ValueBox(RelationItem item, Chain chain) : base() 
 		{
-			_value = value;
+			_item = item;
+			_chain = chain;
+			
+			SetUp();
+		}
+
+		public ValueBox(object info) : base() 
+		{
+			_info = info;
 			SetUp();
 		}
 
 		private void SetUp() 
 		{
-			Content = _value.ToString();
+			if (_item != null) Content = _item.Value.ToString();
+			else Content = _info.ToString();
+			
 			Width = Constants.Dimentions.VALUE_BOX_WIDTH;
 			HorizontalContentAlignment = HorizontalAlignment.Center;
 			VerticalContentAlignment = VerticalAlignment.Center;

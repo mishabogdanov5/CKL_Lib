@@ -8,10 +8,12 @@ namespace CKLLib
 {
     public class TimeInterval : IComparable<TimeInterval>
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public double StartTime { get; set; }
+        public double EndTime { get; set; }
 
-        public TimeSpan Duration
+        public TimeDimentions Dimention { get; set; }
+
+        public double Duration
         {
             get
             {
@@ -19,10 +21,11 @@ namespace CKLLib
             }
         }
 
-        public TimeInterval(DateTime startTime, DateTime endTime)
+        public TimeInterval(double startTime, double endTime, TimeDimentions dimention)
         {
             StartTime = startTime;
             EndTime = endTime;
+            Dimention = dimention;
         }
 
         public override bool Equals(object? obj)
@@ -32,7 +35,7 @@ namespace CKLLib
             TimeInterval? interval = obj as TimeInterval;
             if (interval == null) return false;
 
-            return StartTime.Equals(interval.StartTime) && EndTime.Equals(interval.EndTime);
+            return StartTime == interval.StartTime && EndTime == interval.EndTime;
         }
 
         public override int GetHashCode()
