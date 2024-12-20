@@ -15,14 +15,16 @@ namespace CKLLib
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                DateTime st = newInterval.StartTime.CompareTo(ckl.GlobalInterval.StartTime) >= 0 ? newInterval.StartTime : ckl.GlobalInterval.StartTime;
-                DateTime et = newInterval.EndTime.CompareTo(ckl.GlobalInterval.EndTime) >= 0 ? ckl.GlobalInterval.EndTime : newInterval.EndTime;
+                double st = newInterval.StartTime >= ckl.GlobalInterval.StartTime ? newInterval.StartTime : ckl.GlobalInterval.StartTime;
+                double et = newInterval.EndTime >= ckl.GlobalInterval.EndTime ? ckl.GlobalInterval.EndTime : newInterval.EndTime;
+
+                TimeInterval intervalsConjuction = new TimeInterval(st, et, ckl.GlobalInterval.Dimention);
 
                 HashSet<RelationItem> items = new HashSet<RelationItem>();
                 List<TimeInterval> timeIntervals = new List<TimeInterval>();
 
-                DateTime newSTime;
-                DateTime newETime;
+                double newSTime;
+                double newETime;
 
                 foreach (RelationItem item in ckl.Relation)
                 {
@@ -30,14 +32,14 @@ namespace CKLLib
 
                     for (int i = 0; i < item.Intervals.Length; i++)
                     {
-                        newSTime = item.Intervals[i].StartTime.CompareTo(st) >= 0 ?
+                        newSTime = item.Intervals[i].StartTime >= st ?
                             item.Intervals[i].StartTime : st;
 
-                        newETime = item.Intervals[i].EndTime.CompareTo(et) >= 0 ?
+                        newETime = item.Intervals[i].EndTime >=st ?
                             et : item.Intervals[i].EndTime;
 
                         if (newSTime.CompareTo(newETime) < 0) timeIntervals.Add(
-                            new TimeInterval(newSTime, newETime));
+                            new TimeInterval(newSTime, newETime, ckl.GlobalInterval.Dimention));
                     }
 
                     if (timeIntervals.Count > 0) items.Add(new RelationItem(item.Value,

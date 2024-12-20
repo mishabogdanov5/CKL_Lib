@@ -8,16 +8,18 @@ using System.Transactions;
 using System.Windows.Controls;
 using System.Windows;
 using CKLLib;
+using System.Windows.Input;
+using System.IO.Packaging;
 
 namespace CKLDrawing
 {
     public class TimeOx : Canvas
     {
         public List<Section> Sections { get => _sections; }
-        public Button Ox { get => _ox;  }
+        public Button Ox { get => _ox; }
         public Canvas SectionsText { get => _sectionsText; }
-        public double DelCoast { get => _delCoast; set { } }
-        public TimeDimentions TimeDimention { get => _timeDimention; set { } }
+        public double DelCoast { get => _delCoast; }
+        public TimeDimentions TimeDimention { get => _timeDimention; }
 
         private double _delCoast;
         private TimeInterval _interval;
@@ -26,7 +28,7 @@ namespace CKLDrawing
         private Button _ox;
         private Canvas _sectionsText;
 
-        public TimeOx(TimeInterval globalInterval, TimeDimentions timeDimention, double delCoast = 1) : base()
+        public TimeOx(TimeInterval globalInterval, TimeDimentions timeDimention, double delCoast) : base()
         {
             _interval = globalInterval;
             _timeDimention = timeDimention;
@@ -47,11 +49,11 @@ namespace CKLDrawing
             SetUpTextCanvas();
 
             //SetDelCoastText();
-			FillOx();
+            FillOx();
             DrawOX();
         }
 
-        private void SetDelCoastText() 
+        private void SetDelCoastText()
         {
             Label text = new Label();
             text.Content = $"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}";
@@ -59,13 +61,13 @@ namespace CKLDrawing
             text.FontSize = 14;
             text.Padding = new Thickness(0);
 
-            Canvas.SetLeft(text, Constants.Dimentions.VALUE_BOX_WIDTH/2);
-            Canvas.SetTop(text, Constants.Dimentions.TIME_OX_HEIGHT/2);
+            Canvas.SetLeft(text, Constants.Dimentions.VALUE_BOX_WIDTH / 2);
+            Canvas.SetTop(text, Constants.Dimentions.TIME_OX_HEIGHT / 2);
 
             Children.Add(text);
         }
 
-        private void SetUpTextCanvas() 
+        private void SetUpTextCanvas()
         {
             _sectionsText = new Canvas();
             _sectionsText.Background = Background;
@@ -75,49 +77,49 @@ namespace CKLDrawing
             Children.Add(_sectionsText);
         }
 
-        private void DrawOX() 
+        private void DrawOX()
         {
             Button ox = new Button();
             ox.Background = Constants.DefaultColors.SECTION_COLOR;
             ox.Width = Width;
-			ox.Height = Constants.Dimentions.SECTION_WIDTH;
+            ox.Height = Constants.Dimentions.SECTION_WIDTH;
             ox.BorderThickness = new Thickness(0);
             Canvas.SetLeft(ox, /*Constants.Dimentions.VALUE_BOX_WIDTH*/ 0);
-            Canvas.SetTop(ox, Constants.Dimentions.TIME_OX_HEIGHT/2);
+            Canvas.SetTop(ox, Constants.Dimentions.TIME_OX_HEIGHT / 2);
 
             Children.Add(ox);
             _ox = ox;
         }
 
-        private void FillOx() 
+        private void FillOx()
         {
             double startPos = Constants.Dimentions.FIRST_DEL_START;
             double sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
 
-            double total = GetTotalDimention();
+            double total = _interval.Duration;
 
             int i = 0;
             double val = 0;
-            
+
             Section section;
-            while (val <= total) 
+            while (val <= total)
             {
-                
+
                 section = new Section(val);
 
-                if (i % 5 == 0) 
+                if (i % 5 == 0)
                 {
                     sectionHeight *= 2;
                     AddText(startPos, val);
                 }
-                if (i % 10 == 0) 
+                if (i % 10 == 0)
                 {
                     sectionHeight *= 2;
                     AddText(startPos, val);
                 }
 
 
-                SetUpSection(section, sectionHeight, startPos);
+                SetUpSection(section, sectionHeight, startPos, val);
                 AddSection(section);
 
                 i++;
@@ -125,17 +127,24 @@ namespace CKLDrawing
                 startPos += Constants.Dimentions.DEL_WIDTH;
                 sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
             }
-            startPos -= Constants.Dimentions.DEL_WIDTH; 
+            startPos -= Constants.Dimentions.DEL_WIDTH;
 
             startPos += Constants.Dimentions.OX_FREE_INTERVAL;
             Width = startPos;
         }
 
-        private void SetUpSection(Section section, double height, double startPos) 
+        private void SetUpSection(Section section, double height, double startPos, double value)
         {
             section.Height = height;
             Canvas.SetLeft(section, startPos);
-            Canvas.SetTop(section, (Constants.Dimentions.TIME_OX_HEIGHT - height)/2);
+            Canvas.SetTop(section, (Constants.Dimentions.TIME_OX_HEIGHT - height) / 2);
+
+            section.MouseEnter += (object sender, MouseEventArgs e) =>
+            {
+                string s = value.ToString();
+
+                MessageBox.Show(s);
+            };
         }
 
         private void AddSection(Section section)
@@ -144,64 +153,29 @@ namespace CKLDrawing
             _sections.Add(section);
         }
 
-        private void AddText(double startPos, double value) 
+        private void AddText(double startPos, double value)
         {
             Label label = new Label();
             label.Background = Constants.DefaultColors.TIME_OX_COLOR;
             label.FontSize = Constants.Dimentions.TEXT_SIZE;
             label.Foreground = Constants.DefaultColors.SECTION_COLOR;
-            label.Content = value;
+
+            string s = value.ToString();
+            string res = s.Contains(',') ? s.Substring(0, s.IndexOf(',') + 1) : s;
+            label.Content = res;
+
             label.HorizontalAlignment = HorizontalAlignment.Center;
             label.HorizontalContentAlignment = HorizontalAlignment.Center;
             label.Padding = new Thickness(0);
-            label.Width = 20;
 
-            Canvas.SetLeft(label, startPos - 20/2);
-            Canvas.SetBottom(label, Constants.Dimentions.SECTIONS_TEXT_HEIGHT/2 
+            Canvas.SetLeft(label, startPos);
+            Canvas.SetBottom(label, Constants.Dimentions.SECTIONS_TEXT_HEIGHT / 2
                 - Constants.Dimentions.SECTION_WIDTH);
             _sectionsText.Children.Add(label);
-		}
+
+            label.Margin = new Thickness(0, 0, 0, 0);
+        }
 
         private void SetDefaultDelCoast() { _delCoast = 1; }
-
-        private double GetTotalDimention() 
-        {
-            double total = 0;
-            
-            switch (_timeDimention)
-            {
-                case TimeDimentions.NANOSECONDS:
-                    total = _interval.Duration.TotalNanoseconds;
-                    break;
-                case TimeDimentions.MICROSECONDS:
-                    total = _interval.Duration.TotalNanoseconds;
-                    break;
-                case TimeDimentions.MILLISECONDS:
-                    total = _interval.Duration.TotalMilliseconds;
-                    break;
-                case TimeDimentions.SECONDS:
-                    total = _interval.Duration.TotalSeconds;
-                    break;
-                case TimeDimentions.MINUTES:
-                    total = _interval.Duration.TotalMinutes;
-                    break;
-                case TimeDimentions.HOURS:
-                    total = _interval.Duration.TotalHours;
-                    break;
-                case TimeDimentions.DAYS:
-                    total = _interval.Duration.TotalDays;
-                    break;
-                case TimeDimentions.MONTH:
-                    total = _interval.Duration.TotalDays / 30;
-                    break;
-                case TimeDimentions.YEARS:
-                    total = _interval.Duration.TotalDays / 365;
-                    break;
-                default:
-                    break;
-            }
-
-            return total;
-        }
     }
 }
