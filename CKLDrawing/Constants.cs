@@ -45,8 +45,8 @@ namespace CKLDrawing
         }
 
         public static readonly string[] TIME_DIMENTIONS_STRINGS = new string[] {"нс", "мкс", "мс", "с", 
-            "м", "ч", "д", "м", "г"};
+            "м", "ч", "д", "н"};
 
-        public static readonly int[] TIME_DIMENTIONS_CONVERT = new int[] { 1000, 1000, 1000, 60, 60, 24, 30, 12  };
+        public static readonly int[] TIME_DIMENTIONS_CONVERT = new int[] { 1000, 1000, 1000, 60, 60, 24, 7  };
     }
 }

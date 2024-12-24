@@ -23,7 +23,7 @@
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(FirstValue, SecondValue);
         }
 
         public override string ToString()

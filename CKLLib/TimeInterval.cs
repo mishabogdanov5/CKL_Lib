@@ -11,8 +11,6 @@ namespace CKLLib
         public double StartTime { get; set; }
         public double EndTime { get; set; }
 
-        public TimeDimentions Dimention { get; set; }
-
         public double Duration
         {
             get
@@ -21,17 +19,14 @@ namespace CKLLib
             }
         }
 
-        public TimeInterval(double startTime, double endTime, TimeDimentions dimention)
+        public TimeInterval(double startTime, double endTime)
         {
             StartTime = startTime;
             EndTime = endTime;
-            Dimention = dimention;
         }
 
         public override bool Equals(object? obj)
         {
-            if (obj is not TimeInterval) return false;
-
             TimeInterval? interval = obj as TimeInterval;
             if (interval == null) return false;
 
@@ -40,7 +35,7 @@ namespace CKLLib
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(StartTime, EndTime);
         }
 
         public override string ToString()
@@ -54,5 +49,7 @@ namespace CKLLib
 
             return Duration.CompareTo(other.Duration);
         }
+
+        public static readonly TimeInterval ZERO = new TimeInterval(0, 0);
     }
 }
