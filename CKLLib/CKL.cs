@@ -9,7 +9,6 @@ namespace CKLLib
     public class CKL
     {
         public string FilePath { get; set; }
-        public string Name { get; set; }
         public TimeInterval GlobalInterval { get; set; }
         public TimeDimentions Dimention { get; set; }
         public HashSet<object> Source { get; set; }
@@ -18,17 +17,15 @@ namespace CKLLib
         public CKL()
         {
             FilePath = string.Empty;
-            Name = string.Empty;
             GlobalInterval = new TimeInterval(0, 0);
             Dimention = TimeDimentions.SECONDS;
 			Source = new HashSet<object>();
             Relation = new HashSet<RelationItem>();
         }
 
-        public CKL(string filePath, string name, TimeInterval timeInterval, TimeDimentions dimention ,HashSet<object> source, HashSet<RelationItem> relation)
+        public CKL(string filePath, TimeInterval timeInterval, TimeDimentions dimention ,HashSet<object> source, HashSet<RelationItem> relation)
         {
             FilePath = filePath;
-            Name = name;
             GlobalInterval = timeInterval;
             Dimention = dimention;
             Source = source;

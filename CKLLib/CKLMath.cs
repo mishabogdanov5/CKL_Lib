@@ -10,6 +10,13 @@ namespace CKLLib
     {
         public static class CKLMath
         {
+
+            private static string GetNewFilePath(string path, string newName) 
+            {
+                string fileDirPath = Path.GetDirectoryName(path);
+                return Path.Combine(fileDirPath, newName, Path.GetExtension(path));
+            }
+
             //TimeOperations
             public static CKL TimeTransform(CKL ckl, TimeInterval newInterval)
             {
@@ -45,7 +52,7 @@ namespace CKLLib
                     if (timeIntervals.Count > 0) items.Add(new RelationItem(item.Value, timeIntervals));
                 }
 
-                return new CKL(ckl.FilePath, ckl.Name, newInterval, ckl.Dimention, ckl.Source, items);
+                return new CKL(ckl.FilePath, newInterval, ckl.Dimention, ckl.Source, items);
             }
 
 
@@ -68,7 +75,7 @@ namespace CKLLib
                     }
                 }
 
-                return new CKL(ckl.FilePath, ckl.Name, ckl.GlobalInterval, ckl.Dimention, newSource, newRelation);
+                return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, newRelation);
             }
 
             public static CKL SourceExpansion(CKL ckl, IEnumerable<object> expansion)
@@ -77,7 +84,7 @@ namespace CKLLib
 
                 HashSet<object> newSource = ckl.Source.Concat(expansion).ToHashSet();
 
-                return new CKL(ckl.FilePath, ckl.Name, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
+                return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
             }
 
             //CKL source operations
@@ -88,6 +95,7 @@ namespace CKLLib
 				if (ckl2 == null) throw new ArgumentNullException();
 
 				if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
+                if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
 				if (!ckl1.Source.SetEquals(ckl2.Source)) throw new ArgumentException();
 			}
 
@@ -115,16 +123,58 @@ namespace CKLLib
                 };
             }
 
+            private static List<TimeInterval> IntervalsIntersection(List<TimeInterval> intervals1, List<TimeInterval> intervals2) 
+            {
+                List<TimeInterval> res = new List<TimeInterval>();
+
+                TimeInterval current = TimeInterval.ZERO;
+
+                foreach (TimeInterval i1 in intervals1)
+                {
+                    foreach (TimeInterval i2 in intervals2) 
+                    {
+                        current = IntervalConjunction(i1,i2);
+                        if (!current.Equals(TimeInterval.ZERO)) res.Add(current);
+                    }
+                }
+
+                return res;
+            } 
+
             public static CKL Intersection(CKL ckl1, CKL ckl2) 
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
 
-                return new CKL();
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+                RelationItem current = new RelationItem();
+
+                foreach (RelationItem item in ckl1.Relation.Union(ckl2.Relation)) 
+                {
+                    if (!relation.Any(x => x.Value.Equals(item.Value))) relation.Add(item);
+                    else 
+                    {
+                        current = relation.Where(x => x.Value.Equals(item.Value))
+                            .First();
+						current.Intervals = IntervalsIntersection(current.Intervals, item.Intervals);
+                    }
+                }
+
+                string file1 = Path.GetFileName(ckl1.FilePath);
+                string file2 = Path.GetFileName(ckl2.FilePath);
+
+                string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+                string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+                string newName = "Intersect_" + name1 + "_" + name2;
+                string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+                return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
             }
 
             public static CKL Union(CKL ckl1, CKL ckl2)
             {
-                
+                TryThrowBinaryExceptions(ckl1, ckl2);
 
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
 
