@@ -6,15 +6,7 @@ using System.Threading.Tasks;
 
 namespace CKLLib
 {
-	public enum TimeDimentions
+	internal static class Constants
 	{
-		NANOSECONDS,
-		MICROSECONDS,
-		MILLISECONDS,
-		SECONDS,
-		MINUTES,
-		HOURS,
-		DAYS,
-		WEEKS
 	}
 }

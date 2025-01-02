@@ -79,7 +79,7 @@ namespace CKLDrawing
                         + Constants.Dimentions.SECTION_WIDTH;
 
 					currentRect = new Interval(_item.Intervals[i]);
-					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, _interval.EndTime, _interval.Dimention));
+					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, _interval.EndTime));
 				}
 
                 else
@@ -92,13 +92,13 @@ namespace CKLDrawing
 
 					currentRect = new Interval(_item.Intervals[i]);
 					currentLine = new Emptyinterval(new TimeInterval(_item.Intervals[i].EndTime, 
-                        _item.Intervals[i + 1].StartTime, _interval.Dimention));
+                        _item.Intervals[i + 1].StartTime));
 				}
 
                 if (i == 0)
                 {
                     double starterLineWidth = _width * (Convert.ToDouble(coordinates[i].FirstValue));
-                    Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime, _interval.Dimention));
+                    Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime));
                     line.Margin = new Thickness(Constants.Dimentions.FIRST_DEL_START,0,0,0);
                     LineSetUp(line, starterLineWidth);
                     AddEmptyInterval(line);

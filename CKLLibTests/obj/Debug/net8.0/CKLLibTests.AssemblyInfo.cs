@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CKLLibTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+57a8da70528fc31cbde9a39b164dc1724af9a96b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7ab3d5aa69dcd2f174322573c3e527ec7e5cf00")]
 [assembly: System.Reflection.AssemblyProductAttribute("CKLLibTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CKLLibTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
