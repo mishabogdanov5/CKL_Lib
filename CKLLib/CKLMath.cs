@@ -87,7 +87,7 @@ namespace CKLLib
                 return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
             }
 
-            //CKL source operations
+            //CKL Logic operations
 
             private static void TryThrowBinaryExceptions(CKL ckl1, CKL ckl2) 
             {
@@ -144,19 +144,33 @@ namespace CKLLib
             public static CKL Intersection(CKL ckl1, CKL ckl2) 
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
-
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
-
-                RelationItem current = new RelationItem();
-
-                foreach (RelationItem item in ckl1.Relation.Union(ckl2.Relation)) 
+                /*foreach (RelationItem item in ckl1.Relation.Union(ckl2.Relation)) 
                 {
-                    if (!relation.Any(x => x.Value.Equals(item.Value))) relation.Add(item);
+                    if (!rel.Any(x => x.Value.Equals(item.Value))) rel.Add(item);
                     else 
                     {
-                        current = relation.Where(x => x.Value.Equals(item.Value))
+                        current = rel.Where(x => x.Value.Equals(item.Value))
                             .First();
-						current.Intervals = IntervalsIntersection(current.Intervals, item.Intervals);
+                        
+                        temp.Value = current.Value;
+                        temp.Info = current.Info;
+                        temp.Intervals = IntervalsIntersection(current.Intervals, item.Intervals);
+
+                        relation.Add(temp);
+                    }
+                }*/
+
+                foreach (RelationItem item1 in ckl1.Relation) 
+                {
+                    foreach (RelationItem item2 in ckl2.Relation) 
+                    {
+                        if (item1.Value.Equals(item2.Value)) 
+                        {
+                            relation.Add(new RelationItem(item1.Value, 
+                                IntervalsIntersection(item1.Intervals, item2.Intervals)));
+                            break;
+                        }
                     }
                 }
 
@@ -182,6 +196,59 @@ namespace CKLLib
                 return new CKL();
 
             }
+
+            public static CKL Inversion(CKL ckl) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+                List<TimeInterval> currentIntervals = new List<TimeInterval>();
+                TimeInterval temp = TimeInterval.ZERO;
+                foreach (RelationItem item in ckl.Relation) 
+                {
+                    currentIntervals.Clear();
+                    for (int i = 0; i < item.Intervals.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            if (item.Intervals[i].StartTime > 0)
+                            {
+                                temp.StartTime = 0;
+                                temp.EndTime = item.Intervals[i].StartTime;
+                            }
+                            else temp = TimeInterval.ZERO;
+                        }
+
+                        else if (i == item.Intervals.Count - 1)
+                        {
+                            currentIntervals.Add(new TimeInterval(item.Intervals[i-1].EndTime, item.Intervals[i].StartTime));
+                            if (item.Intervals[i].EndTime < ckl.GlobalInterval.EndTime)
+                            {
+                                temp.StartTime = item.Intervals[i].EndTime;
+                                temp.EndTime = ckl.GlobalInterval.EndTime;
+                            }
+                            else temp = TimeInterval.ZERO;
+                        }
+
+                        else 
+                        {
+                            temp.StartTime = item.Intervals[i-1].EndTime;
+                            temp.EndTime = item.Intervals[i].StartTime;
+                        }
+
+                        if (!temp.Equals(TimeInterval.ZERO)) currentIntervals.Add(temp);
+                    }
+
+                    relation.Add(new RelationItem(item.Value, currentIntervals));
+
+                }
+
+                string newPath = GetNewFilePath(ckl.FilePath, "Inversion_"+Path.GetFileName(ckl.FilePath));
+
+                return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
+			}
         }
+
+
     }
 }
