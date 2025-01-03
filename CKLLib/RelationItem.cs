@@ -23,6 +23,7 @@ namespace CKLLib
         {
             Value = value;
 			Intervals = intervals.OrderBy(x => x, new TimeIntervalsComparer()).ToList();
+            if (Intervals.Count > 1) Intervals.RemoveAll(x => x.Equals(TimeInterval.ZERO));
         }
 
         public RelationItem(object value, TimeInterval[] intervals, object? info) : this(value, intervals)

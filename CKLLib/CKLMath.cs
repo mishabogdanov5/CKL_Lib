@@ -14,7 +14,7 @@ namespace CKLLib
         public static class CKLMath
         {
 
-            private static string GetNewFilePath(string path, string newName) 
+            private static string GetNewFilePath(string path, string newName)
             {
                 string fileDirPath = Path.GetDirectoryName(path);
                 return Path.Combine(fileDirPath, newName, Path.GetExtension(path));
@@ -45,7 +45,7 @@ namespace CKLLib
                         newSTime = item.Intervals[i].StartTime >= st ?
                             item.Intervals[i].StartTime : st;
 
-                        newETime = item.Intervals[i].EndTime >=st ?
+                        newETime = item.Intervals[i].EndTime >= st ?
                             et : item.Intervals[i].EndTime;
 
                         if (newSTime < newETime) timeIntervals.Add(
@@ -92,17 +92,17 @@ namespace CKLLib
 
             //CKL Logic operations
 
-            private static void TryThrowBinaryExceptions(CKL ckl1, CKL ckl2) 
+            private static void TryThrowBinaryExceptions(CKL ckl1, CKL ckl2)
             {
-				if (ckl1 == null) throw new ArgumentNullException();
-				if (ckl2 == null) throw new ArgumentNullException();
+                if (ckl1 == null) throw new ArgumentNullException();
+                if (ckl2 == null) throw new ArgumentNullException();
 
-				if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
+                if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
                 if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
-				if (!ckl1.Source.SetEquals(ckl2.Source)) throw new ArgumentException();
-			}
+                if (!ckl1.Source.SetEquals(ckl2.Source)) throw new ArgumentException();
+            }
 
-            private static TimeInterval IntervalsDisjunction(TimeInterval i1, TimeInterval i2) 
+            private static TimeInterval IntervalsDisjunction(TimeInterval i1, TimeInterval i2)
             {
                 if (i1.StartTime > i2.EndTime || i2.StartTime > i1.EndTime) return TimeInterval.ZERO;
 
@@ -113,15 +113,15 @@ namespace CKLLib
                     );
             }
 
-            private static bool AreIntervalsCombine(TimeInterval i1, TimeInterval i2) 
+            private static bool AreIntervalsCombine(TimeInterval i1, TimeInterval i2)
             {
                 return (IntervalsDisjunction(i1, i2).Equals(i2) || IntervalsDisjunction(i1, i2).Equals(i1));
             }
 
-            private static bool IsIntervalInserted(TimeInterval timeInterval, List<TimeInterval> intervals) 
+            private static bool IsIntervalInserted(TimeInterval timeInterval, List<TimeInterval> intervals)
             {
                 if (timeInterval.Equals(TimeInterval.ZERO)) return true;
-                
+
                 foreach (TimeInterval interval in intervals)
                 {
                     if (AreIntervalsCombine(interval, timeInterval)) return true;
@@ -147,9 +147,9 @@ namespace CKLLib
                     if (!IsIntervalInserted(temp, res)) res.Add(temp);
                 }
 
-                foreach (TimeInterval interval in intervals2) 
+                foreach (TimeInterval interval in intervals2)
                 {
-                    if (!IsIntervalInserted(interval, res)) 
+                    if (!IsIntervalInserted(interval, res))
                         res.Add(new TimeInterval(interval.StartTime, interval.EndTime));
                 }
 
@@ -163,75 +163,75 @@ namespace CKLLib
                 TryThrowBinaryExceptions(ckl1, ckl2);
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
 
-                foreach (RelationItem item1 in ckl1.Relation) 
+                foreach (RelationItem item1 in ckl1.Relation)
                 {
-                    foreach (RelationItem item2 in ckl2.Relation) 
+                    foreach (RelationItem item2 in ckl2.Relation)
                     {
-                        if (item1.Value.Equals(item2.Value)) 
+                        if (item1.Value.Equals(item2.Value))
                         {
-                            relation.Add(new RelationItem(item1.Value, 
+                            relation.Add(new RelationItem(item1.Value,
                                 IntervalsUnion(item1.Intervals, item2.Intervals)));
                             break;
                         }
 
-					}
+                    }
                 }
 
-				string file1 = Path.GetFileName(ckl1.FilePath);
-				string file2 = Path.GetFileName(ckl2.FilePath);
+                string file1 = Path.GetFileName(ckl1.FilePath);
+                string file2 = Path.GetFileName(ckl2.FilePath);
 
-				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
-				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+                string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+                string name2 = file2.Substring(0, file2.LastIndexOf('.'));
 
-				string newName = "Union_" + name1 + "_" + name2;
-				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+                string newName = "Union_" + name1 + "_" + name2;
+                string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
 
-				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
+                return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
             }
 
-			private static TimeInterval IntervalConjunction(TimeInterval i1, TimeInterval i2)
-			{
-				if (i1.StartTime >= i2.EndTime || i2.StartTime >= i1.EndTime)
-					return TimeInterval.ZERO;
-				return new TimeInterval
-					(
-						i1.StartTime >= i2.StartTime ? i1.StartTime : i2.StartTime,
-						i1.EndTime >= i2.EndTime ? i2.EndTime : i1.EndTime
-					);
-			}
+            private static TimeInterval IntervalConjunction(TimeInterval i1, TimeInterval i2)
+            {
+                if (i1.StartTime >= i2.EndTime || i2.StartTime >= i1.EndTime)
+                    return TimeInterval.ZERO;
+                return new TimeInterval
+                    (
+                        i1.StartTime >= i2.StartTime ? i1.StartTime : i2.StartTime,
+                        i1.EndTime >= i2.EndTime ? i2.EndTime : i1.EndTime
+                    );
+            }
 
-			private static List<TimeInterval> IntervalsIntersection(List<TimeInterval> intervals1, List<TimeInterval> intervals2)
-			{
-				List<TimeInterval> res = new List<TimeInterval>();
+            private static List<TimeInterval> IntervalsIntersection(List<TimeInterval> intervals1, List<TimeInterval> intervals2)
+            {
+                List<TimeInterval> res = new List<TimeInterval>();
 
-				TimeInterval current = TimeInterval.ZERO;
+                TimeInterval current = TimeInterval.ZERO;
 
-				foreach (TimeInterval i1 in intervals1)
-				{
-					foreach (TimeInterval i2 in intervals2)
-					{
-						current = IntervalConjunction(i1, i2);
-						if (!current.Equals(TimeInterval.ZERO)) res.Add(current);
-					}
-				}
+                foreach (TimeInterval i1 in intervals1)
+                {
+                    foreach (TimeInterval i2 in intervals2)
+                    {
+                        current = IntervalConjunction(i1, i2);
+                        if (!current.Equals(TimeInterval.ZERO)) res.Add(current);
+                    }
+                }
 
                 if (res.Count == 0) return new List<TimeInterval> { TimeInterval.ZERO };
 
-				return res;
-			}
+                return res;
+            }
 
-			public static CKL Intersection(CKL ckl1, CKL ckl2) 
+            public static CKL Intersection(CKL ckl1, CKL ckl2)
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
-                
-                foreach (RelationItem item1 in ckl1.Relation) 
+
+                foreach (RelationItem item1 in ckl1.Relation)
                 {
-                    foreach (RelationItem item2 in ckl2.Relation) 
+                    foreach (RelationItem item2 in ckl2.Relation)
                     {
-                        if (item1.Value.Equals(item2.Value)) 
+                        if (item1.Value.Equals(item2.Value))
                         {
-                            relation.Add(new RelationItem(item1.Value, 
+                            relation.Add(new RelationItem(item1.Value,
                                 IntervalsIntersection(item1.Intervals, item2.Intervals)));
                             break;
                         }
@@ -250,75 +250,141 @@ namespace CKLLib
                 return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
             }
 
-            private static bool IsIntervalsEmpty(IEnumerable<TimeInterval> intervals) 
+            private static bool IsIntervalsEmpty(IEnumerable<TimeInterval> intervals)
             {
                 return intervals.SequenceEqual(new List<TimeInterval>() { TimeInterval.ZERO });
             }
 
-            private static List<TimeInterval> GetItemInverseIntervals(RelationItem item, TimeInterval global) 
+            private static List<TimeInterval> IntervalsInversion(List<TimeInterval> intervals, TimeInterval global)
             {
                 TimeInterval temp = TimeInterval.ZERO;
                 List<TimeInterval> currentIntervals = new List<TimeInterval>();
-				
-                if (item.Intervals.Count == 1)
-				{
-					if (item.Intervals[0].StartTime > global.StartTime)
-					{
-						temp = new TimeInterval(global.StartTime, item.Intervals[0].StartTime);
-						currentIntervals.Add(temp);
-					}
 
-					if (item.Intervals[0].EndTime < global.EndTime)
-					{
-						temp = new TimeInterval(item.Intervals[0].EndTime, global.EndTime);
-						currentIntervals.Add(temp);
-					}
+                if (intervals.Count == 1)
+                {
+                    if (intervals[0].StartTime > global.StartTime)
+                    {
+                        temp = new TimeInterval(global.StartTime, intervals[0].StartTime);
+                        currentIntervals.Add(temp);
+                    }
 
-					if (item.Intervals[0].EndTime == global.EndTime &&
-						item.Intervals[0].StartTime == global.StartTime)
-					{
+                    if (intervals[0].EndTime < global.EndTime)
+                    {
+                        temp = new TimeInterval(intervals[0].EndTime, global.EndTime);
+                        currentIntervals.Add(temp);
+                    }
+
+                    if (intervals[0].EndTime == global.EndTime &&
+                        intervals[0].StartTime == global.StartTime)
+                    {
                         return new List<TimeInterval>()
                             { TimeInterval.ZERO };
-					}
+                    }
 
-					return currentIntervals;
-				}
+                    return currentIntervals;
+                }
 
-				for (int i = 0; i < item.Intervals.Count; i++)
-				{
-					if (i == 0)
-					{
-						if (item.Intervals[i].StartTime > global.StartTime)
-						{
-							temp = new TimeInterval(global.StartTime, item.Intervals[0].StartTime);
-						}
-						else temp = TimeInterval.ZERO;
-					}
+                for (int i = 0; i < intervals.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        if (intervals[i].StartTime > global.StartTime)
+                        {
+                            temp = new TimeInterval(global.StartTime, intervals[0].StartTime);
+                        }
+                        else temp = TimeInterval.ZERO;
+                    }
 
-					if (i == item.Intervals.Count - 1)
-					{
-						temp = new TimeInterval(item.Intervals[i - 1].EndTime, item.Intervals[i].StartTime);
+                    if (i == intervals.Count - 1)
+                    {
+                        temp = new TimeInterval(intervals[i - 1].EndTime, intervals[i].StartTime);
 
-						if (!temp.Equals(TimeInterval.ZERO)) currentIntervals.Add(temp);
+                        if (!temp.Equals(TimeInterval.ZERO)) currentIntervals.Add(temp);
 
-						if (item.Intervals[i].EndTime < global.EndTime)
-						{
-							temp = new TimeInterval(item.Intervals[i].EndTime, global.EndTime);
-						}
-						else temp = TimeInterval.ZERO;
-					}
+                        if (intervals[i].EndTime < global.EndTime)
+                        {
+                            temp = new TimeInterval(intervals[i].EndTime, global.EndTime);
+                        }
+                        else temp = TimeInterval.ZERO;
+                    }
 
-					if (i != 0 && i != item.Intervals.Count - 1)
-					{
-						temp = new TimeInterval(item.Intervals[i - 1].EndTime, item.Intervals[i].StartTime);
-					}
+                    if (i != 0 && i != intervals.Count - 1)
+                    {
+                        temp = new TimeInterval(intervals[i - 1].EndTime, intervals[i].StartTime);
+                    }
 
-					if (!temp.Equals(TimeInterval.ZERO))
-						currentIntervals.Add(temp);
-				}
+                    if (!temp.Equals(TimeInterval.ZERO))
+                        currentIntervals.Add(temp);
+                }
 
                 return currentIntervals;
-			}
+            }
+
+            private static bool HaveSamePoints(TimeInterval timeInterval, List<TimeInterval> intervals) 
+            {
+                foreach (TimeInterval interval in intervals) 
+                {
+                    if (!IntervalConjunction(timeInterval, interval).Equals(TimeInterval.ZERO)) return true;
+                }
+
+                return false;
+            }
+
+            private static List<TimeInterval> IntervalsDifference(List<TimeInterval> intervals1, List<TimeInterval> intervals2) 
+            {
+                List<TimeInterval> res = new List<TimeInterval>();
+                List<TimeInterval> currentDif = new List<TimeInterval>();
+                TimeInterval temp = TimeInterval.ZERO;
+                
+                foreach (TimeInterval interval1 in intervals1) 
+                {
+                    if (!HaveSamePoints(interval1, intervals2)) res.Add(interval1);
+                    else 
+                    {
+						currentDif.Clear();
+						foreach (TimeInterval interval2 in intervals2)
+						{
+							temp = IntervalConjunction(interval1, interval2);
+							if (!temp.Equals(TimeInterval.ZERO)) currentDif.Add(temp);
+						}
+						res.AddRange(IntervalsInversion(currentDif, interval1));
+					}
+                    
+                }
+
+                if (res.Count == 0) return new List<TimeInterval>() { TimeInterval.ZERO };
+                return res;
+            }
+
+            public static CKL Difference(CKL ckl1, CKL ckl2) 
+            {
+                TryThrowBinaryExceptions(ckl1, ckl2);
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+                foreach (RelationItem item1 in ckl1.Relation) 
+                {
+                    foreach (RelationItem item2 in ckl2.Relation) 
+                    {
+                        if (item1.Value.Equals(item2.Value)) 
+                        {
+                            relation.Add(new RelationItem(item1.Value, 
+                                IntervalsDifference(item1.Intervals, item2.Intervals)));
+                            break;
+                        }
+                    }
+                }
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "Difference_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
+            }
 
             public static CKL Inversion(CKL ckl) 
             {
@@ -329,7 +395,7 @@ namespace CKLLib
                 {
                     if (!IsIntervalsEmpty(item.Intervals)) 
                         relation.Add(new RelationItem(item.Value, 
-                            GetItemInverseIntervals(item, ckl.GlobalInterval)));
+                            IntervalsInversion(item.Intervals, ckl.GlobalInterval)));
 
                     else relation.Add(new RelationItem(item.Value, new List<TimeInterval>()
                     { ckl.GlobalInterval }));
