@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CKLLib
@@ -25,6 +26,7 @@ namespace CKLLib
         private double _startTime;
         private double _endTime;
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public double Duration
         {
             get

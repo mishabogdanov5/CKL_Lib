@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CKLLib
@@ -57,5 +58,18 @@ namespace CKLLib
 		{
             return HashCode.Combine(GlobalInterval, Dimention, Source, Relation);
 		}
+
+        public static void Save(CKL ckl) 
+        {
+            string s = JsonSerializer.Serialize(ckl);
+
+            if (!File.Exists(ckl.FilePath)) File.Create(ckl.FilePath);
+            File.WriteAllText(ckl.FilePath, s);
+        }
+
+        public static CKL? GetFromFile(string path) 
+        {
+            return JsonSerializer.Deserialize<CKL>(File.ReadAllText(path));
+        }
 	}
 }

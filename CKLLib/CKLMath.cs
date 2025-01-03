@@ -17,7 +17,7 @@ namespace CKLLib
             private static string GetNewFilePath(string path, string newName)
             {
                 string fileDirPath = Path.GetDirectoryName(path);
-                return Path.Combine(fileDirPath, newName, Path.GetExtension(path));
+                return Path.Combine(fileDirPath, newName + Path.GetExtension(path));
             }
 
             //TimeOperations
@@ -25,12 +25,14 @@ namespace CKLLib
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                double st = newInterval.StartTime >= ckl.GlobalInterval.StartTime ? newInterval.StartTime : ckl.GlobalInterval.StartTime;
-                double et = newInterval.EndTime >= ckl.GlobalInterval.EndTime ? ckl.GlobalInterval.EndTime : newInterval.EndTime;
+				string newPath = GetNewFilePath(ckl.FilePath, "time_transform_" + Path.GetFileName(ckl.FilePath));
 
-                TimeInterval intervalsConjuction = new TimeInterval(st, et);
+				TimeInterval generalInterval = IntervalConjunction(newInterval, ckl.GlobalInterval);
 
-                HashSet<RelationItem> items = new HashSet<RelationItem>();
+                if (generalInterval.Equals(TimeInterval.ZERO)) 
+                    return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
+
+				HashSet<RelationItem> items = new HashSet<RelationItem>();
                 List<TimeInterval> timeIntervals = new List<TimeInterval>();
 
                 double newSTime;
@@ -42,20 +44,22 @@ namespace CKLLib
 
                     for (int i = 0; i < item.Intervals.Count; i++)
                     {
-                        newSTime = item.Intervals[i].StartTime >= st ?
-                            item.Intervals[i].StartTime : st;
+                        newSTime = item.Intervals[i].StartTime >= generalInterval.StartTime ?
+                            item.Intervals[i].StartTime : generalInterval.StartTime;
 
-                        newETime = item.Intervals[i].EndTime >= st ?
-                            et : item.Intervals[i].EndTime;
+                        newETime = item.Intervals[i].EndTime >= generalInterval.EndTime ?
+                            generalInterval.EndTime : item.Intervals[i].EndTime;
 
                         if (newSTime < newETime) timeIntervals.Add(
                             new TimeInterval(newSTime, newETime));
                     }
 
-                    if (timeIntervals.Count > 0) items.Add(new RelationItem(item.Value, timeIntervals));
+                    if (timeIntervals.Count > 0) items.Add(new RelationItem(item.Value, timeIntervals, item.Info));
+                    else items.Add(new RelationItem(item.Value, new List<TimeInterval>()
+                    { TimeInterval.ZERO}, item.Info));
                 }
-
-                return new CKL(ckl.FilePath, newInterval, ckl.Dimention, ckl.Source, items);
+				
+				return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, items);
             }
 
 
@@ -74,7 +78,7 @@ namespace CKLLib
                     if (selector(item.Value))
                     {
                         newSource.Add(item.Value);
-                        newRelation.Add(item);
+                        newRelation.Add((RelationItem)item.Clone());
                     }
                 }
 
@@ -183,7 +187,7 @@ namespace CKLLib
                 string name1 = file1.Substring(0, file1.LastIndexOf('.'));
                 string name2 = file2.Substring(0, file2.LastIndexOf('.'));
 
-                string newName = "Union_" + name1 + "_" + name2;
+                string newName = "union_" + name1 + "_" + name2;
                 string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
 
                 return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
@@ -244,7 +248,7 @@ namespace CKLLib
                 string name1 = file1.Substring(0, file1.LastIndexOf('.'));
                 string name2 = file2.Substring(0, file2.LastIndexOf('.'));
 
-                string newName = "Intersect_" + name1 + "_" + name2;
+                string newName = "intersect_" + name1 + "_" + name2;
                 string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
 
                 return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
@@ -380,7 +384,7 @@ namespace CKLLib
 				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
 				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
 
-				string newName = "Difference_" + name1 + "_" + name2;
+				string newName = "difference_" + name1 + "_" + name2;
 				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
 
 				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
@@ -401,7 +405,7 @@ namespace CKLLib
                     { ckl.GlobalInterval }));
                 }
 
-                string newPath = GetNewFilePath(ckl.FilePath, "Inversion_"+Path.GetFileName(ckl.FilePath));
+                string newPath = GetNewFilePath(ckl.FilePath, "inversion_"+Path.GetFileName(ckl.FilePath));
 
                 return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}
