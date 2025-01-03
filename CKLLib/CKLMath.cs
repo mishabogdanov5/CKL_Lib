@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -101,49 +102,125 @@ namespace CKLLib
 				if (!ckl1.Source.SetEquals(ckl2.Source)) throw new ArgumentException();
 			}
 
-            private static TimeInterval IntervalConjunction(TimeInterval i1, TimeInterval i2) 
+            private static TimeInterval IntervalsDisjunction(TimeInterval i1, TimeInterval i2) 
             {
-                if (i1.StartTime >= i2.EndTime || i2.StartTime >= i1.EndTime)
-                    return TimeInterval.ZERO;
+                if (i1.StartTime > i2.EndTime || i2.StartTime > i1.EndTime) return TimeInterval.ZERO;
+
                 return new TimeInterval
                     (
-                        i1.StartTime >= i2.StartTime ? i1.StartTime : i2.StartTime,
-                        i1.EndTime >= i2.EndTime ? i2.EndTime : i1.EndTime
+                        i1.StartTime > i2.StartTime ? i2.StartTime : i1.StartTime,
+                        i1.EndTime > i2.EndTime ? i1.EndTime : i2.EndTime
                     );
-			}
-
-            private static List<TimeInterval> IntervalsDisjunction(TimeInterval i1, TimeInterval i2) 
-            {
-                if (i1.StartTime >= i2.EndTime || i2.StartTime >= i1.EndTime)
-                    return new List<TimeInterval> { i1, i2 };
-                
-                return new List<TimeInterval> { new TimeInterval
-                    (
-                        i1.StartTime <= i2.StartTime ? i1.StartTime : i2.StartTime,
-                        i1.EndTime <= i2.EndTime ? i2.EndTime : i1.EndTime
-                    ) 
-                };
             }
 
-            private static List<TimeInterval> IntervalsIntersection(List<TimeInterval> intervals1, List<TimeInterval> intervals2) 
+            private static bool AreIntervalsCombine(TimeInterval i1, TimeInterval i2) 
             {
-                List<TimeInterval> res = new List<TimeInterval>();
+                return (IntervalsDisjunction(i1, i2).Equals(i2) || IntervalsDisjunction(i1, i2).Equals(i1));
+            }
 
-                TimeInterval current = TimeInterval.ZERO;
-
-                foreach (TimeInterval i1 in intervals1)
+            private static bool IsIntervalInserted(TimeInterval timeInterval, List<TimeInterval> intervals) 
+            {
+                if (timeInterval.Equals(TimeInterval.ZERO)) return true;
+                
+                foreach (TimeInterval interval in intervals)
                 {
-                    foreach (TimeInterval i2 in intervals2) 
-                    {
-                        current = IntervalConjunction(i1,i2);
-                        if (!current.Equals(TimeInterval.ZERO)) res.Add(current);
-                    }
+                    if (AreIntervalsCombine(interval, timeInterval)) return true;
                 }
 
-                return res;
-            } 
+                return false;
+            }
 
-            public static CKL Intersection(CKL ckl1, CKL ckl2) 
+            private static List<TimeInterval> IntervalsUnion(List<TimeInterval> intervals1, List<TimeInterval> intervals2)
+            {
+                List<TimeInterval> res = new List<TimeInterval>();
+                TimeInterval temp = TimeInterval.ZERO;
+
+                foreach (TimeInterval interval1 in intervals1)
+                {
+                    temp = new TimeInterval(interval1.StartTime, interval1.EndTime);
+                    foreach (TimeInterval interval2 in intervals2)
+                    {
+                        TimeInterval disjunction = IntervalsDisjunction(temp, interval2);
+                        if (!disjunction.Equals(TimeInterval.ZERO)) temp = disjunction;
+                    }
+
+                    if (!IsIntervalInserted(temp, res)) res.Add(temp);
+                }
+
+                foreach (TimeInterval interval in intervals2) 
+                {
+                    if (!IsIntervalInserted(interval, res)) 
+                        res.Add(new TimeInterval(interval.StartTime, interval.EndTime));
+                }
+
+                if (res.Count == 0) return new List<TimeInterval>() { TimeInterval.ZERO };
+
+                return res;
+            }
+
+            public static CKL Union(CKL ckl1, CKL ckl2)
+            {
+                TryThrowBinaryExceptions(ckl1, ckl2);
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+                foreach (RelationItem item1 in ckl1.Relation) 
+                {
+                    foreach (RelationItem item2 in ckl2.Relation) 
+                    {
+                        if (item1.Value.Equals(item2.Value)) 
+                        {
+                            relation.Add(new RelationItem(item1.Value, 
+                                IntervalsUnion(item1.Intervals, item2.Intervals)));
+                            break;
+                        }
+
+					}
+                }
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "Union_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
+            }
+
+			private static TimeInterval IntervalConjunction(TimeInterval i1, TimeInterval i2)
+			{
+				if (i1.StartTime >= i2.EndTime || i2.StartTime >= i1.EndTime)
+					return TimeInterval.ZERO;
+				return new TimeInterval
+					(
+						i1.StartTime >= i2.StartTime ? i1.StartTime : i2.StartTime,
+						i1.EndTime >= i2.EndTime ? i2.EndTime : i1.EndTime
+					);
+			}
+
+			private static List<TimeInterval> IntervalsIntersection(List<TimeInterval> intervals1, List<TimeInterval> intervals2)
+			{
+				List<TimeInterval> res = new List<TimeInterval>();
+
+				TimeInterval current = TimeInterval.ZERO;
+
+				foreach (TimeInterval i1 in intervals1)
+				{
+					foreach (TimeInterval i2 in intervals2)
+					{
+						current = IntervalConjunction(i1, i2);
+						if (!current.Equals(TimeInterval.ZERO)) res.Add(current);
+					}
+				}
+
+                if (res.Count == 0) return new List<TimeInterval> { TimeInterval.ZERO };
+
+				return res;
+			}
+
+			public static CKL Intersection(CKL ckl1, CKL ckl2) 
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
@@ -152,9 +229,7 @@ namespace CKLLib
                 {
                     foreach (RelationItem item2 in ckl2.Relation) 
                     {
-                        if (item1.Value.Equals(item2.Value) && 
-                            !IsIntervalsEmpty(item1.Intervals)&& 
-                            !IsIntervalsEmpty(item2.Intervals)) 
+                        if (item1.Value.Equals(item2.Value)) 
                         {
                             relation.Add(new RelationItem(item1.Value, 
                                 IntervalsIntersection(item1.Intervals, item2.Intervals)));
@@ -173,17 +248,6 @@ namespace CKLLib
                 string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
 
                 return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
-            }
-
-            public static CKL Union(CKL ckl1, CKL ckl2)
-            {
-                TryThrowBinaryExceptions(ckl1, ckl2);
-
-                HashSet<RelationItem> relation = new HashSet<RelationItem>();
-
-
-                return new CKL();
-
             }
 
             private static bool IsIntervalsEmpty(IEnumerable<TimeInterval> intervals) 
@@ -276,7 +340,5 @@ namespace CKLLib
                 return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}
         }
-
-
     }
 }
