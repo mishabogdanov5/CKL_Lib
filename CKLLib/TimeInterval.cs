@@ -30,6 +30,8 @@ namespace CKLLib
             TimeInterval? interval = obj as TimeInterval;
             if (interval == null) return false;
 
+            if (interval.Duration == 0 && Duration == 0) return true;
+
             return StartTime == interval.StartTime && EndTime == interval.EndTime;
         }
 

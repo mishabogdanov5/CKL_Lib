@@ -30,6 +30,17 @@ namespace CKLLib
             Dimention = dimention;
             Source = source;
             Relation = relation;
+
+            FillRelation();
+        }
+
+        private void FillRelation() 
+        {
+            foreach (object item in Source) 
+            {
+                if (!Relation.Any(x => x.Value.Equals(item))) Relation.Add(new RelationItem(item, 
+                    new List<TimeInterval>() { TimeInterval.ZERO } ));
+            }
         }
 
 		public override bool Equals(object? obj)
