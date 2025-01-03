@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CKLLib
 {
-    public class RelationItem
+    public class RelationItem: ICloneable
     {
         public object Value { get; set; }
         public List<TimeInterval> Intervals { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public object? Info { get; set; }
 
         public RelationItem()
@@ -26,7 +29,7 @@ namespace CKLLib
             if (Intervals.Count > 1) Intervals.RemoveAll(x => x.Equals(TimeInterval.ZERO));
         }
 
-        public RelationItem(object value, TimeInterval[] intervals, object? info) : this(value, intervals)
+        public RelationItem(object value, List<TimeInterval> intervals, object? info) : this(value, intervals)
         {
             Info = info;
         }
@@ -46,6 +49,18 @@ namespace CKLLib
         {
             return HashCode.Combine(Value, Intervals);
         }
+
+		public object Clone()
+		{
+            List<TimeInterval> newIntervals  = new List<TimeInterval>();
+
+            foreach (TimeInterval interval in Intervals) 
+            {
+                newIntervals.Add(new TimeInterval(interval.StartTime, interval.EndTime));
+            }
+
+            return new RelationItem(Value, newIntervals, Info);
+		}
 
 		private class TimeIntervalEqualityComparer : IEqualityComparer<TimeInterval>
 		{
