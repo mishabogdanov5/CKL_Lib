@@ -13,17 +13,20 @@ namespace CKLDrawing
 	public class ValueBox: Button
 	{
 		public Chain? CurrentChain { get => _chain; }
+		public bool IsActive { get => _isActive; }
 		public RelationItem? Item { get => _item; }
 		public object Info { get => _info; }
 
 		private Chain _chain;
+		private bool _isActive;
 		private RelationItem _item;
 		private object _info;
 		public ValueBox(RelationItem item, Chain chain) : base() 
 		{
 			_item = item;
 			_chain = chain;
-			
+			_isActive = false;
+
 			SetUp();
 		}
 
@@ -35,7 +38,21 @@ namespace CKLDrawing
 
 		private void SetUp() 
 		{
-			if (_item != null) Content = _item.Value.ToString();
+			if (_item != null) 
+			{
+				Content = _item.Value.ToString();
+				Click += (object sender, RoutedEventArgs e) => 
+				{
+					if (Background.Equals(Constants.DefaultColors.CKL_BACKGROUND)) 
+					{
+						if (_item.Info != null) MessageBox.Show(_item.Info.ToString());
+						Background = Constants.DefaultColors.TIME_OX_COLOR;
+					}
+					else Background = Constants.DefaultColors.CKL_BACKGROUND;
+					
+					_isActive = !_isActive;
+				};
+			} 
 			else Content = _info.ToString();
 			
 			Width = Constants.Dimentions.VALUE_BOX_WIDTH;

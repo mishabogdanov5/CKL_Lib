@@ -3,13 +3,19 @@
     public class Pair
     {
         public object FirstValue { get; set; }
-        public object SecondValue { get; set; }
+        public object? SecondValue { get; set; }
 
-        public Pair(object firstValue, object secondValue)
+        public Pair() { }
+		public Pair(object firstValue)
+		{
+			FirstValue = firstValue;
+		}
+		public Pair(object firstValue, object secondValue): this(firstValue)
         {
-            FirstValue = firstValue;
             SecondValue = secondValue;
         }
+
+       
 
         public override bool Equals(object? obj)
         {
@@ -18,7 +24,7 @@
             Pair? pair = obj as Pair;
             if (pair == null) return false;
 
-            return FirstValue.Equals(pair.FirstValue) && SecondValue.Equals(pair.SecondValue);
+            return ToString().Equals(pair.ToString());
         }
 
         public override int GetHashCode()
@@ -28,7 +34,9 @@
 
         public override string ToString()
         {
-            return $"({FirstValue.ToString()};{SecondValue.ToString()})";
+            if (SecondValue != null)
+                return $"({FirstValue.ToString()};{SecondValue.ToString()})";
+            return FirstValue.ToString();
         }
     }
 }

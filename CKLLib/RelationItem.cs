@@ -10,7 +10,7 @@ namespace CKLLib
 {
     public class RelationItem: ICloneable
     {
-        public object Value { get; set; }
+        public Pair Value { get; set; }
         public List<TimeInterval> Intervals { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -22,14 +22,14 @@ namespace CKLLib
             Intervals = new List<TimeInterval>();
         }
 
-        public RelationItem(object value, IEnumerable<TimeInterval> intervals)
+        public RelationItem(Pair value, IEnumerable<TimeInterval> intervals)
         {
             Value = value;
 			Intervals = intervals.OrderBy(x => x, new TimeIntervalsComparer()).ToList();
             if (Intervals.Count > 1) Intervals.RemoveAll(x => x.Equals(TimeInterval.ZERO));
         }
 
-        public RelationItem(object value, List<TimeInterval> intervals, object? info) : this(value, intervals)
+        public RelationItem(Pair value, List<TimeInterval> intervals, object? info) : this(value, intervals)
         {
             Info = info;
         }

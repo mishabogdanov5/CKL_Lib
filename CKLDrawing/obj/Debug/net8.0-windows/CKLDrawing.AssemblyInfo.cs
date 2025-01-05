@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CKLDrawing")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7ab3d5aa69dcd2f174322573c3e527ec7e5cf00")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6ef28eb0606c03087c4777311f245c6a87d5ed8")]
 [assembly: System.Reflection.AssemblyProductAttribute("CKLDrawing")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CKLDrawing")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

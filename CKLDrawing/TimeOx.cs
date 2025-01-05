@@ -18,20 +18,17 @@ namespace CKLDrawing
         public List<Section> Sections { get => _sections; }
         public Button Ox { get => _ox; }
         public Canvas SectionsText { get => _sectionsText; }
-        public double DelCoast { get => _delCoast; }
-        public TimeDimentions TimeDimention { get => _timeDimention; }
+        public int DelCoast { get => _delCoast; }
 
-        private double _delCoast;
+        private int _delCoast;
         private TimeInterval _interval;
-        private TimeDimentions _timeDimention;
         private List<Section> _sections;
         private Button _ox;
         private Canvas _sectionsText;
 
-        public TimeOx(TimeInterval globalInterval, TimeDimentions timeDimention, double delCoast) : base()
+        public TimeOx(TimeInterval globalInterval, int delCoast) : base()
         {
             _interval = globalInterval;
-            _timeDimention = timeDimention;
             _delCoast = delCoast;
 
             SetUp();
@@ -48,23 +45,18 @@ namespace CKLDrawing
 
             SetUpTextCanvas();
 
-            //SetDelCoastText();
             FillOx();
             DrawOX();
         }
 
-        private void SetDelCoastText()
+        public void Refresh(TimeInterval globalInterval, int delCoast) 
         {
-            Label text = new Label();
-            text.Content = $"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}";
-            text.Foreground = Constants.DefaultColors.SECTION_COLOR;
-            text.FontSize = 14;
-            text.Padding = new Thickness(0);
-
-            Canvas.SetLeft(text, Constants.Dimentions.VALUE_BOX_WIDTH / 2);
-            Canvas.SetTop(text, Constants.Dimentions.TIME_OX_HEIGHT / 2);
-
-            Children.Add(text);
+            Children.Clear();
+			
+           _interval = globalInterval;
+			_delCoast = delCoast;
+			
+            SetUp();
         }
 
         private void SetUpTextCanvas()
@@ -107,14 +99,14 @@ namespace CKLDrawing
 
                 section = new Section(val);
 
-                if (i % 5 == 0)
+                if (i % 5 == 0 && i%10 != 0)
                 {
                     sectionHeight *= 2;
                     AddText(startPos, val);
                 }
-                if (i % 10 == 0)
+                else if (i % 10 == 0)
                 {
-                    sectionHeight *= 2;
+                    sectionHeight *= 4;
                     AddText(startPos, val);
                 }
 
@@ -124,13 +116,14 @@ namespace CKLDrawing
 
                 i++;
                 val += _delCoast;
-                startPos += Constants.Dimentions.DEL_WIDTH;
-                sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
+				sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
+				
+                if (val <= total) 
+                {
+					startPos += Constants.Dimentions.DEL_WIDTH;
+				}
             }
-            startPos -= Constants.Dimentions.DEL_WIDTH;
-
-            startPos += Constants.Dimentions.OX_FREE_INTERVAL;
-            Width = startPos;
+            Width = startPos + Constants.Dimentions.OX_FREE_INTERVAL;
         }
 
         private void SetUpSection(Section section, double height, double startPos, double value)
@@ -164,15 +157,17 @@ namespace CKLDrawing
             string res = s.Contains(',') ? s.Substring(0, s.IndexOf(',') + 1) : s;
             label.Content = res;
 
-            label.HorizontalAlignment = HorizontalAlignment.Center;
+            label.HorizontalAlignment = HorizontalAlignment.Left;
             label.HorizontalContentAlignment = HorizontalAlignment.Center;
+            label.VerticalContentAlignment = VerticalAlignment.Bottom;
             label.Padding = new Thickness(0);
 
-            Canvas.SetLeft(label, startPos);
-            Canvas.SetBottom(label, Constants.Dimentions.SECTIONS_TEXT_HEIGHT / 2
-                - Constants.Dimentions.SECTION_WIDTH);
+            Canvas.SetLeft(label, startPos - 2.5);
+            Canvas.SetBottom(label, 2.5);
             _sectionsText.Children.Add(label);
 
+           /*double width = label.Width;
+            Canvas.SetLeft(label, startPos - width/2);*/
             label.Margin = new Thickness(0, 0, 0, 0);
         }
 
