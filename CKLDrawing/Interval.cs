@@ -8,7 +8,7 @@ namespace CKLDrawing
     public class Interval : Button
     {
         public TimeInterval CurrentInterval { get => _interval; }
-        public bool IsActive { get; }
+        public bool IsActive { get => _isActive; }
        
         
         private TimeInterval _interval;
@@ -39,6 +39,20 @@ namespace CKLDrawing
                 _isActive = !_isActive;
             };
         }
+
+        public void Select() 
+        {
+			Background = Constants.DefaultColors.INTERVAL_ITEM_ACTIVE_COLOR;
+			BorderThickness = Constants.Dimentions.INTERVAL_BORDER_SIZE;
+            _isActive = true;
+		}
+
+        public void Unselect() 
+        {
+			Background = Constants.DefaultColors.INTERVAL_ITEM_COLOR;
+			BorderThickness = new Thickness(0);
+            _isActive = false;
+		}
 
         public Interval(TimeInterval interval) : base() 
         {

@@ -12,7 +12,7 @@ namespace CKLLib
         public string FilePath { get; set; }
         public TimeInterval GlobalInterval { get; set; }
         public TimeDimentions Dimention { get; set; }
-        public HashSet<object> Source { get; set; }
+        public HashSet<Pair> Source { get; set; }
         public HashSet<RelationItem> Relation { get; set; }
         
         public CKL()
@@ -20,11 +20,11 @@ namespace CKLLib
             FilePath = string.Empty;
             GlobalInterval = new TimeInterval(0, 0);
             Dimention = TimeDimentions.SECONDS;
-			Source = new HashSet<object>();
+			Source = new HashSet<Pair>();
             Relation = new HashSet<RelationItem>();
         }
 
-        public CKL(string filePath, TimeInterval timeInterval, TimeDimentions dimention ,HashSet<object> source, HashSet<RelationItem> relation)
+        public CKL(string filePath, TimeInterval timeInterval, TimeDimentions dimention ,HashSet<Pair> source, HashSet<RelationItem> relation)
         {
             FilePath = filePath;
             GlobalInterval = timeInterval;
@@ -37,7 +37,7 @@ namespace CKLLib
 
         private void FillRelation() 
         {
-            foreach (object item in Source) 
+            foreach (Pair item in Source) 
             {
                 if (!Relation.Any(x => x.Value.Equals(item))) Relation.Add(new RelationItem(item, 
                     new List<TimeInterval>() { TimeInterval.ZERO } ));
@@ -62,8 +62,6 @@ namespace CKLLib
         public static void Save(CKL ckl) 
         {
             string s = JsonSerializer.Serialize(ckl);
-
-            if (!File.Exists(ckl.FilePath)) File.Create(ckl.FilePath);
             File.WriteAllText(ckl.FilePath, s);
         }
 

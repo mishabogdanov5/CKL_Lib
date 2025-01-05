@@ -8,5 +8,6 @@ namespace CKLLib
 {
 	internal static class Constants
 	{
+		
 	}
 }

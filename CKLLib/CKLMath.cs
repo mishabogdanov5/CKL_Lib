@@ -25,14 +25,14 @@ namespace CKLLib
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-				string newPath = GetNewFilePath(ckl.FilePath, "time_transform_" + Path.GetFileName(ckl.FilePath));
+                string newPath = GetNewFilePath(ckl.FilePath, "time_transform_" + Path.GetFileName(ckl.FilePath));
 
-				TimeInterval generalInterval = IntervalConjunction(newInterval, ckl.GlobalInterval);
+                TimeInterval generalInterval = IntervalConjunction(newInterval, ckl.GlobalInterval);
 
-                if (generalInterval.Equals(TimeInterval.ZERO)) 
+                if (generalInterval.Equals(TimeInterval.ZERO))
                     return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
 
-				HashSet<RelationItem> items = new HashSet<RelationItem>();
+                HashSet<RelationItem> items = new HashSet<RelationItem>();
                 List<TimeInterval> timeIntervals = new List<TimeInterval>();
 
                 double newSTime;
@@ -58,19 +58,17 @@ namespace CKLLib
                     else items.Add(new RelationItem(item.Value, new List<TimeInterval>()
                     { TimeInterval.ZERO}, item.Info));
                 }
-				
-				return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, items);
+
+                return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, items);
             }
-
-
 
             //Source operations
 
-            public static CKL SourceConstriction(CKL ckl, Func<object, bool> selector)
+            public static CKL SourceConstriction(CKL ckl, Func<Pair, bool> selector)
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                HashSet<object> newSource = new HashSet<object>();
+                HashSet<Pair> newSource = new HashSet<Pair>();
                 HashSet<RelationItem> newRelation = new HashSet<RelationItem>();
 
                 foreach (RelationItem item in ckl.Relation)
@@ -85,11 +83,11 @@ namespace CKLLib
                 return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, newRelation);
             }
 
-            public static CKL SourceExpansion(CKL ckl, IEnumerable<object> expansion)
+            public static CKL SourceExpansion(CKL ckl, IEnumerable<Pair> expansion)
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                HashSet<object> newSource = ckl.Source.Concat(expansion).ToHashSet();
+                HashSet<Pair> newSource = ckl.Source.Concat(expansion).ToHashSet();
 
                 return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
             }
@@ -103,7 +101,7 @@ namespace CKLLib
 
                 if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
                 if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
-                if (!ckl1.Source.SetEquals(ckl2.Source)) throw new ArgumentException();
+                if (!ckl1.Source.SequenceEqual(ckl2.Source)) throw new ArgumentException();
             }
 
             private static TimeInterval IntervalsDisjunction(TimeInterval i1, TimeInterval i2)
@@ -117,9 +115,9 @@ namespace CKLLib
                     );
             }
 
-            private static bool AreIntervalsCombine(TimeInterval i1, TimeInterval i2)
+            private static bool IsIntervalCombine(TimeInterval i1, TimeInterval i2)
             {
-                return (IntervalsDisjunction(i1, i2).Equals(i2) || IntervalsDisjunction(i1, i2).Equals(i1));
+                return (IntervalsDisjunction(i1, i2).Equals(i2));
             }
 
             private static bool IsIntervalInserted(TimeInterval timeInterval, List<TimeInterval> intervals)
@@ -128,10 +126,35 @@ namespace CKLLib
 
                 foreach (TimeInterval interval in intervals)
                 {
-                    if (AreIntervalsCombine(interval, timeInterval)) return true;
+                    if (IsIntervalCombine(timeInterval, interval)) return true;
                 }
 
                 return false;
+            }
+
+            private static void InsertInterval(TimeInterval timeInterval, List<TimeInterval> intervals) 
+            {
+                List<TimeInterval> remove = new List<TimeInterval>();
+                TimeInterval temp = timeInterval;
+
+                foreach (TimeInterval interval in intervals)
+                {
+					TimeInterval disjunction = IntervalsDisjunction(timeInterval, interval);
+                    if (!disjunction.Equals(TimeInterval.ZERO)) 
+                    {
+						temp = disjunction;
+                        remove.Add(interval);
+					}
+                    
+				}
+
+                if (remove.Count > 0) 
+                {
+                    intervals.Add(temp);
+
+                    foreach (TimeInterval interval in remove) intervals.Remove(interval);
+                }
+                else intervals.Add(temp);
             }
 
             private static List<TimeInterval> IntervalsUnion(List<TimeInterval> intervals1, List<TimeInterval> intervals2)
@@ -148,7 +171,7 @@ namespace CKLLib
                         if (!disjunction.Equals(TimeInterval.ZERO)) temp = disjunction;
                     }
 
-                    if (!IsIntervalInserted(temp, res)) res.Add(temp);
+                    if (!IsIntervalInserted(temp, res)) InsertInterval(temp, res);
                 }
 
                 foreach (TimeInterval interval in intervals2)
@@ -399,15 +422,124 @@ namespace CKLLib
                 {
                     if (!IsIntervalsEmpty(item.Intervals)) 
                         relation.Add(new RelationItem(item.Value, 
-                            IntervalsInversion(item.Intervals, ckl.GlobalInterval)));
+                            IntervalsInversion(item.Intervals, ckl.GlobalInterval), item.Info));
 
                     else relation.Add(new RelationItem(item.Value, new List<TimeInterval>()
-                    { ckl.GlobalInterval }));
+                    { ckl.GlobalInterval }, item.Info));
                 }
 
                 string newPath = GetNewFilePath(ckl.FilePath, "inversion_"+Path.GetFileName(ckl.FilePath));
 
                 return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
+			}
+
+            //Semantic operations
+            private static void TryThrowSemanticException(CKL ckl1, CKL ckl2) 
+            {
+                if (ckl1 == null) throw new ArgumentNullException();
+                if (ckl2 == null) throw new ArgumentNullException();
+                
+                if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
+                if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
+                
+                foreach (Pair p in ckl1.Source) 
+                {
+                    if (p.SecondValue != null) throw new ArgumentException();
+                }
+				foreach (Pair p in ckl2.Source)
+				{
+					if (p.SecondValue != null) throw new ArgumentException();
+				}
+			}
+            
+            public static CKL SemanticUnion(CKL ckl1, CKL ckl2)
+            {
+                TryThrowSemanticException(ckl1, ckl2);
+
+                HashSet<Pair> source = new HashSet<Pair>();
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+                Pair p;
+                
+                foreach (RelationItem item1 in ckl1.Relation) 
+                {
+                    foreach (RelationItem item2 in ckl2.Relation) 
+                    {
+                        p = new Pair(item1.Value.FirstValue, item2.Value.FirstValue);
+                        source.Add(p);
+                        relation.Add(new RelationItem(p, IntervalsUnion(item1.Intervals, item2.Intervals)));
+                    }
+                }
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "semantic_union_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, source, relation);
+            }
+
+            public static CKL SemanticIntersection(CKL ckl1, CKL ckl2) 
+            {
+                TryThrowSemanticException(ckl1, ckl2);
+
+				HashSet<Pair> source = new HashSet<Pair>();
+				HashSet<RelationItem> relation = new HashSet<RelationItem>();
+				Pair p;
+
+				foreach (RelationItem item1 in ckl1.Relation)
+				{
+					foreach (RelationItem item2 in ckl2.Relation)
+					{
+						p = new Pair(item1.Value.FirstValue, item2.Value.FirstValue);
+						source.Add(p);
+						relation.Add(new RelationItem(p, IntervalsIntersection(item1.Intervals, item2.Intervals)));
+					}
+				}
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "semantic_intersection_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, source, relation);
+			}
+
+            public static CKL SemanticDifference(CKL ckl1, CKL ckl2) 
+            {
+				TryThrowSemanticException(ckl1, ckl2);
+
+				HashSet<Pair> source = new HashSet<Pair>();
+				HashSet<RelationItem> relation = new HashSet<RelationItem>();
+				Pair p;
+
+				foreach (RelationItem item1 in ckl1.Relation)
+				{
+					foreach (RelationItem item2 in ckl2.Relation)
+					{
+						p = new Pair(item1.Value.FirstValue, item2.Value.FirstValue);
+						source.Add(p);
+						relation.Add(new RelationItem(p, IntervalsDifference(item1.Intervals, item2.Intervals)));
+					}
+				}
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "semantic_difference_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, source, relation);
 			}
         }
     }

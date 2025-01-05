@@ -29,24 +29,26 @@ namespace CKLDrawing
         {
             public static readonly double LINE_HEIGHT = 3;
             public static readonly Thickness INTERVAL_BORDER_SIZE = new Thickness(2);
-            public static readonly double CHAIN_HEIGHT = 35;
+            public static readonly double CHAIN_HEIGHT = 28;
             public static readonly double CKL_WIDTH = 1600;
             public static readonly Thickness CHAIN_MARGIN = new Thickness(10, 0, 0, 10);
             public static readonly Thickness TIME_OX_MARGIN = new Thickness(10, 0, 0, 5);
             public static readonly double VALUE_BOX_WIDTH = 100;
             public static readonly double SECTION_WIDTH = 2.5;
-            public static readonly double SECTION_HEIGHT = 9;
+            public static readonly double SECTION_HEIGHT = 10;
             public static readonly double TIME_OX_HEIGHT = 70;
             public static readonly double DEL_WIDTH = 20;
-            public static readonly double OX_FREE_INTERVAL = 30;
-            public static readonly double SECTIONS_TEXT_HEIGHT = 20;
-            public static readonly double TEXT_SIZE = 10;
-            public static readonly double FIRST_DEL_START = 20;
+            public static readonly double OX_FREE_INTERVAL = 40;
+            public static readonly double SECTIONS_TEXT_HEIGHT = 15;
+            public static readonly double TEXT_SIZE = 9;
+            public static readonly double FIRST_DEL_START = 5;
+            public static readonly double MAIN_VIEW_PADDING_RIGHT = 5;
+            public static readonly double MAIN_VIEW_PADDING_BOTTOM = 15;
         }
 
-        public static readonly string[] TIME_DIMENTIONS_STRINGS = new string[] {"нс", "мкс", "мс", "с", 
-            "м", "ч", "д", "н"};
+		public static readonly string[] TIME_DIMENTIONS_STRINGS = new string[] {"нс", "мкс", "мс", "с",
+			"м", "ч", "д", "н"};
 
-        public static readonly int[] TIME_DIMENTIONS_CONVERT = new int[] { 1000, 1000, 1000, 60, 60, 24, 7  };
-    }
+		public static readonly int[] TIME_DIMENTIONS_CONVERT = new int[] { 1000, 1000, 1000, 60, 60, 24, 7 };
+	}
 }

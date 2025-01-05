@@ -53,7 +53,7 @@ namespace CKLDrawing
 
         private void FillIntervals()
         {
-            _width = Width - Constants.Dimentions.OX_FREE_INTERVAL - 20;
+            _width = Width;
             List<Pair> pairs = new List<Pair>();
 
             foreach (TimeInterval interval in _item.Intervals)
@@ -70,7 +70,16 @@ namespace CKLDrawing
 
             for (int i = 0; i < coordinates.Length; i++)
             {
-                if (i == coordinates.Length - 1)
+				if (i == 0)
+				{
+					double starterLineWidth = _width * (Convert.ToDouble(coordinates[i].FirstValue));
+					Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime));
+					line.Margin = new Thickness(Constants.Dimentions.FIRST_DEL_START, 0, 0, 0);
+					LineSetUp(line, starterLineWidth);
+					AddEmptyInterval(line);
+				}
+
+				if (i == coordinates.Length - 1)
                 {
                     rectWidth = _width * (Convert.ToDouble(coordinates[i].SecondValue) -
                         Convert.ToDouble(coordinates[i].FirstValue));
@@ -95,14 +104,7 @@ namespace CKLDrawing
                         _item.Intervals[i + 1].StartTime));
 				}
 
-                if (i == 0)
-                {
-                    double starterLineWidth = _width * (Convert.ToDouble(coordinates[i].FirstValue));
-                    Emptyinterval line = new Emptyinterval(new TimeInterval(_interval.StartTime, _item.Intervals[i].StartTime));
-                    line.Margin = new Thickness(Constants.Dimentions.FIRST_DEL_START,0,0,0);
-                    LineSetUp(line, starterLineWidth);
-                    AddEmptyInterval(line);
-                }
+                
 
                 RectSetUp(currentRect, rectWidth);
                 LineSetUp(currentLine, lineWidth);

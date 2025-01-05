@@ -12,20 +12,18 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-	public class CKLView: DockPanel
+	public class CKLView : DockPanel
 	{
-		public CKL Ckl { get => _ckl;  }
+		public CKL Ckl { get => _ckl; }
 		public List<Chain> Chains { get => _chains; }
 		public List<Interval> SelectedIntervals { get => _selectedIntervals; }
 		public TimeOx TimeScale { get => _timeScale; }
-		public TimeInterval CurrentInterval { get => _currentInterval;  }
+		public TimeInterval CurrentInterval { get => _currentInterval; }
 		public StackPanel ListView { get => _listView; }
-		public StackPanel MainView { get => _mainView; }
-		public StackPanel Content { get => _content; }
+		public Canvas MainView { get => _mainView; }
 		public ScrollViewer ScrollView { get => _scrollView; }
-		public TimeDimentions TimeDimention { get => _timeDimention;  }
-		public double DelCoast { get => _delCoast; }
-		public double ScaleMulti { get => _scaleMulti; }
+		public TimeDimentions TimeDimention { get => _timeDimention; }
+		public int DelCoast { get => _delCoast; }
 
 		private CKL _ckl;
 		private List<Chain> _chains;
@@ -33,14 +31,10 @@ namespace CKLDrawing
 		private TimeOx _timeScale;
 		private TimeInterval _currentInterval;
 		private StackPanel _listView;
-		private StackPanel _mainView;
-		private StackPanel _timePanel;
-		private StackPanel _content;
+		private Canvas _mainView;
 		private ScrollViewer _scrollView;
-		private TimeDimentions _timeDimention;	
-		private double _delCoast;
-		private double _scaleMulti;
-		private double _intervalMulti;
+		private TimeDimentions _timeDimention;
+		private int _delCoast;
 
 		public CKLView(CKL ckl) : base()
 		{
@@ -48,81 +42,14 @@ namespace CKLDrawing
 			_delCoast = 1;
 			_timeDimention = _ckl.Dimention;
 			_currentInterval = new TimeInterval(_ckl.GlobalInterval.StartTime, _ckl.GlobalInterval.EndTime);
-			_scaleMulti = 1;
-			_intervalMulti = 1;
 
 			SetUp();
 		}
 
-		public void ChangeDelCoast(double newDelCoast, TimeDimentions newDimention) 
-		{
-
-			if (newDelCoast < 1)
-			{
-				if (!newDimention.Equals(TimeDimentions.NANOSECONDS))
-				{
-					_timeDimention = (TimeDimentions)(int)newDimention - 1;
-					_delCoast = Constants.TIME_DIMENTIONS_CONVERT[(int)_timeDimention];
-					_scaleMulti *= Constants.TIME_DIMENTIONS_CONVERT[(int)_timeDimention];
-					_intervalMulti = _scaleMulti;
-					OnDelCoastChange();
-					return;
-				}
-			}
-
-			if (newDimention.Equals(_timeDimention)) 
-			{
-				if (newDelCoast >= Constants.TIME_DIMENTIONS_CONVERT[(int)_timeDimention])
-				{
-					if (!_timeDimention.Equals(TimeDimentions.WEEKS))
-					{
-						_delCoast = 1;
-						_scaleMulti /= Constants.TIME_DIMENTIONS_CONVERT[(int)_timeDimention];
-						_intervalMulti = _scaleMulti;
-						_timeDimention = (TimeDimentions)(int)_timeDimention + 1;
-						OnDelCoastChange();
-						return;
-					}
-				}
-			}
-
-			ChangeScaleMulti(newDimention, newDelCoast);
-			_delCoast = newDelCoast;
-			_timeDimention = newDimention;
-
-			OnDelCoastChange();
-			_scaleMulti = 1;
-			_intervalMulti = 1;
-		}
-
-		private void ChangeScaleMulti(TimeDimentions newDimention, double newDelCoast)
-		{
-			if ((int)_timeDimention > (int)newDimention)
-			{
-				_scaleMulti *= (_delCoast / newDelCoast);
-
-				for (int i = (int)_timeDimention - 1; i >= (int)newDimention; i--)
-				{
-					_scaleMulti *= Constants.TIME_DIMENTIONS_CONVERT[i];
-					_intervalMulti *= Constants.TIME_DIMENTIONS_CONVERT[i];
-				}
-			}
-			else 
-			{
-				_scaleMulti *= (_delCoast / newDelCoast);
-
-				for (int i = (int)newDimention - 1; i >= (int)_timeDimention; i--)
-				{
-					_scaleMulti /= Constants.TIME_DIMENTIONS_CONVERT[i];
-					_intervalMulti /= Constants.TIME_DIMENTIONS_CONVERT[i];
-				}
-			}
-		}
-
-		private void SetUp() 
+		private void SetUp()
 		{
 			Background = Constants.DefaultColors.CKL_BACKGROUND;
-			
+
 			_chains = new List<Chain>();
 			_selectedIntervals = new List<Interval>();
 
@@ -130,30 +57,22 @@ namespace CKLDrawing
 			_listView.Background = Background;
 			_listView.Orientation = Orientation.Vertical;
 
-			_mainView = new StackPanel();
+			_mainView = new Canvas();
 			_mainView.Background = Background;
-			_mainView.Orientation = Orientation.Vertical;
+			_mainView.VerticalAlignment = VerticalAlignment.Top;
+			_mainView.HorizontalAlignment = HorizontalAlignment.Left;
 
-			_content = new StackPanel();
-			_content.Background = Background;
-			_content.Orientation = Orientation.Horizontal;
 
 			_scrollView = new ScrollViewer();
 			_scrollView.Background = Background;
 			_scrollView.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
 			_scrollView.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
-			_timePanel = new StackPanel();
-			_timePanel.Background = Background;
-			_timePanel.Orientation = Orientation.Vertical;
-
 			DrawOx();
 			DrawChains();
 
-			_content.Children.Add(_mainView);
+			_scrollView.Content = _mainView;
 
-			_scrollView.Content = _content;
-			
 			DockPanel.SetDock(_listView, Dock.Left);
 			DockPanel.SetDock(_scrollView, Dock.Left);
 
@@ -161,64 +80,136 @@ namespace CKLDrawing
 			Children.Add(_scrollView);
 		}
 
-		private void OnDelCoastChange() 
+		public void ChangeDelCoast(TimeDimentions newDimention, int newDelCoast)
 		{
-			_currentInterval.StartTime *= _intervalMulti;
-			_currentInterval.EndTime *= _intervalMulti;
+			if (newDelCoast == 0) return;
+			
+			double intervalMulti = 1;
+			double delMulti = (double)_delCoast / newDelCoast;
 
-			_timeScale = new TimeOx(_currentInterval, _timeDimention, _delCoast);
-			(_mainView.Children[0] as StackPanel).Children.Clear();
-			(_mainView.Children[0] as StackPanel).Children.Add(_timeScale);
-
-			(_listView.Children[0] as ValueBox).Content = 
-				$"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}";
-
-			SetUpChains();
-		}
-
-		private void SetUpChains() 
-		{
-			foreach (Chain chain in _chains) 
+			if (!newDimention.Equals(_timeDimention)) 
 			{
-				chain.Width *= _intervalMulti;
-				foreach (Interval interval in chain.Intervals) 
-				{
-					interval.Width *= _scaleMulti;
-				}
-				foreach (Emptyinterval interval in chain.Emptyintervals) 
-				{
-					interval.Width *= _scaleMulti;
-				}
-			}
+				//if ((int) newDimention > (int) _timeDimention) delMulti = (double)newDelCoast / _delCoast;
+				intervalMulti = UpdateInterval(newDimention);
+			} 
+
+			double scale = intervalMulti * delMulti;
+
+			_delCoast = newDelCoast;
+			_timeDimention = newDimention;
+
+			_timeScale.Refresh(_currentInterval, _delCoast);
+			_mainView.Width = _timeScale.Width + Constants.Dimentions.MAIN_VIEW_PADDING_RIGHT;
+			ChangeChainsScale(scale);
+			ChangeDelCoast();
 		}
 
 		private void DrawOx()
 		{
 
-			_timeScale = new TimeOx(_ckl.GlobalInterval, _timeDimention, _delCoast);
-			_timePanel.Children.Add(_timeScale);
-			_mainView.Children.Add(_timePanel);
+			_timeScale = new TimeOx(_ckl.GlobalInterval, _delCoast);
+
+			Canvas.SetLeft(_timeScale, 0);
+			Canvas.SetTop(_timeScale, 0);
+
+			_mainView.Children.Add(_timeScale);
+			_mainView.Width = _timeScale.Width + Constants.Dimentions.MAIN_VIEW_PADDING_RIGHT;
+			_mainView.Height = _timeScale.Height + Constants.Dimentions.TIME_OX_MARGIN.Bottom
+				+ Constants.Dimentions.MAIN_VIEW_PADDING_BOTTOM;
 
 			_listView.Children.Add(new ValueBox
-				($"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}")
+				($"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}\n{_currentInterval}")
 			{
 				Height = _timeScale.Height,
 				Background = _timeScale.Background,
 				Foreground = Constants.DefaultColors.SECTION_COLOR,
-				Margin = Constants.Dimentions.TIME_OX_MARGIN
+				Margin = Constants.Dimentions.TIME_OX_MARGIN,
 			});
 
 		}
 
+		private void ChangeDelCoast()
+		{
+			(_listView.Children[0] as ValueBox).Content =
+				$"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}\n{_currentInterval}";
+		}
+
+		private void ChangeChainsScale(double scale) 
+		{
+			foreach (Chain chain in _chains)
+			{
+				foreach (Interval interval in chain.Intervals) interval.Width *= scale;
+				foreach (Emptyinterval empty in chain.Emptyintervals) empty.Width *= scale;
+				chain.Width *= scale;
+			}
+		}
+
+		private double UpdateInterval(TimeDimentions newDimention) 
+		{
+			int oldDim = (int)_timeDimention;
+			int newDim = (int)newDimention;
+			double intervalMulti = 1;
+
+			if (oldDim > newDim)
+			{
+				for (int i = 0; i < oldDim - newDim; i++)
+				{
+					intervalMulti *= Constants.TIME_DIMENTIONS_CONVERT[newDim + i];
+				}
+
+			}
+			else 
+			{
+				for (int i = 0; i < newDim - oldDim; i++) 
+				{
+					intervalMulti /= Constants.TIME_DIMENTIONS_CONVERT[oldDim + i];
+				}
+			}
+			
+			_currentInterval.StartTime *= intervalMulti;
+			_currentInterval.EndTime *= intervalMulti;
+
+			return intervalMulti;
+		}
+
 		private void DrawChains() 
 		{
+			double actTop = _timeScale.Height + Constants.Dimentions.TIME_OX_MARGIN.Bottom;
+
 			foreach (RelationItem item in Ckl.Relation) 
 			{
-				Chain chain = new Chain(item, Ckl.GlobalInterval, _timeScale.Width);
+				Chain chain = new Chain(item, Ckl.GlobalInterval, 
+					_timeScale.Width - Constants.Dimentions.OX_FREE_INTERVAL - Constants.Dimentions.FIRST_DEL_START);
+				
 				SetUpChainIntervals(chain);
-				AddChain(chain);
+				AddChain(chain, actTop);
+				
+				actTop += chain.Height + Constants.Dimentions.CHAIN_MARGIN.Bottom;
+				_mainView.Height += chain.Height + Constants.Dimentions.CHAIN_MARGIN.Bottom;
 
-				_listView.Children.Add(new ValueBox(item, chain));
+				ValueBox vb = new ValueBox(item, chain);
+				
+				vb.Click += (object sender, RoutedEventArgs e) =>
+				{
+					if (vb.IsActive)
+					{
+						foreach (Interval interval in chain.Intervals)
+						{
+							interval.Select();
+							_selectedIntervals.Add(interval);
+						}
+					}
+					else 
+					{
+						foreach (Interval interval in chain.Intervals) 
+						{
+							interval.Unselect();
+							_selectedIntervals.Remove(interval);
+						}
+					}
+				};
+
+				_listView.Children.Add(vb);
 			}
 		}
 
@@ -228,17 +219,25 @@ namespace CKLDrawing
 			{
 				interval.Click += (object sender, RoutedEventArgs e) => 
 				{
-					if (interval.IsActive) _selectedIntervals.Add(interval);
+					if (interval.IsActive) 
+					{
+						_selectedIntervals.Add(interval);
+						MessageBox.Show($"{interval.CurrentInterval}");
+					} 
 					else _selectedIntervals.Remove(interval);
 
 				};
 			}
 		}
 
-		private void AddChain(Chain chain) 
+		private void AddChain(Chain chain, double top) 
 		{
+			Canvas.SetLeft(chain, 0);
+			Canvas.SetTop(chain, top);
+
 			_mainView.Children.Add(chain);
 			_chains.Add(chain);
+			
 		}
 	}
 }
