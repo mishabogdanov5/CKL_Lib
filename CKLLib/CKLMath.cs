@@ -25,9 +25,12 @@ namespace CKLLib
             {
                 if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
 
-                string newPath = GetNewFilePath(ckl.FilePath, "time_transform_" + Path.GetFileName(ckl.FilePath));
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
 
-                TimeInterval generalInterval = IntervalConjunction(newInterval, ckl.GlobalInterval);
+				string newPath = GetNewFilePath(ckl.FilePath, "time_transform_" + name);
+
+				TimeInterval generalInterval = IntervalConjunction(newInterval, ckl.GlobalInterval);
 
                 if (generalInterval.Equals(TimeInterval.ZERO))
                     return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
@@ -80,7 +83,12 @@ namespace CKLLib
                     }
                 }
 
-                return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, newRelation);
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, "constriction_" + name);
+
+				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, newSource, newRelation);
             }
 
             public static CKL SourceExpansion(CKL ckl, IEnumerable<Pair> expansion)
@@ -89,7 +97,12 @@ namespace CKLLib
 
                 HashSet<Pair> newSource = ckl.Source.Concat(expansion).ToHashSet();
 
-                return new CKL(ckl.FilePath, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, "expansion_" + name);
+
+				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, newSource, ckl.Relation);
             }
 
             //CKL Logic operations
@@ -428,7 +441,10 @@ namespace CKLLib
                     { ckl.GlobalInterval}));
                 }
 
-                string newPath = GetNewFilePath(ckl.FilePath, "inversion_"+Path.GetFileName(ckl.FilePath));
+                string file = Path.GetFileName(ckl.FilePath);
+                string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, "inversion_"+name);
 
                 return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}
@@ -441,22 +457,29 @@ namespace CKLLib
 
                 HashSet<Pair> source = new HashSet<Pair>();
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
-                Pair pair;
+                Pair pair = new Pair();
                 RelationItem currentItem;
 
                 foreach (RelationItem item in ckl.Relation) 
                 {
-                    pair = new Pair(item.Value.SecondValue, item.Value.FirstValue);
-                    source.Add(pair);
+                    if (item.Value.ThirdValue == null)
+                    {
+                        pair = new Pair(item.Value.SecondValue, item.Value.FirstValue);
+                    }
+                    else pair = new Pair(item.Value.ThirdValue, item.Value.SecondValue, item.Value.FirstValue);
                     
-                    currentItem = item.Clone() as RelationItem;
-                    currentItem.Value = pair;
+                    source.Add(pair);
+
+                    currentItem = new RelationItem(pair, item.Intervals, item.Info);
                     relation.Add(currentItem);
                 }
 
-				string newPath = GetNewFilePath(ckl.FilePath, "transposition_" + Path.GetFileName(ckl.FilePath));
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
 
-                return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, source, relation);
+				string newPath = GetNewFilePath(ckl.FilePath, "transposition_" + name);
+
+				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, source, relation);
 			}
 
 
@@ -482,9 +505,12 @@ namespace CKLLib
                         interval => interval.Duration <= duration), item.Info));
                 }
 
-				string newPath = GetNewFilePath(ckl.FilePath, "truncation_low_" + Path.GetFileName(ckl.FilePath));
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
 
-                return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
+				string newPath = GetNewFilePath(ckl.FilePath, "truncate_high_" + name);
+
+				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}
 
             public static CKL TruncationLowLimit(CKL ckl, double duration) 
@@ -499,7 +525,10 @@ namespace CKLLib
 						interval => interval.Duration >= duration), item.Info));
 				}
 
-				string newPath = GetNewFilePath(ckl.FilePath, "truncation_high_" + Path.GetFileName(ckl.FilePath));
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, "truncate_low_" + name);
 
 				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}

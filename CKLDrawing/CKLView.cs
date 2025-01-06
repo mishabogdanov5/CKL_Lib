@@ -33,6 +33,7 @@ namespace CKLDrawing
 		private StackPanel _listView;
 		private Canvas _mainView;
 		private ScrollViewer _scrollView;
+		private DockPanel _dockPanel;
 		private TimeDimentions _timeDimention;
 		private int _delCoast;
 
@@ -68,15 +69,22 @@ namespace CKLDrawing
 			_scrollView.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
 			_scrollView.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
+			_dockPanel = new DockPanel();
+			_dockPanel.Background = Background;
+
 			DrawOx();
 			DrawChains();
 
-			_scrollView.Content = _mainView;
+			
 
 			DockPanel.SetDock(_listView, Dock.Left);
-			DockPanel.SetDock(_scrollView, Dock.Left);
+			DockPanel.SetDock(_mainView, Dock.Left);
 
-			Children.Add(_listView);
+			_dockPanel.Children.Add(_listView);
+			_dockPanel.Children.Add(_mainView);
+
+			_scrollView.Content = _dockPanel;
+
 			Children.Add(_scrollView);
 		}
 
@@ -107,7 +115,7 @@ namespace CKLDrawing
 		private void DrawOx()
 		{
 
-			_timeScale = new TimeOx(_ckl.GlobalInterval, _delCoast);
+			_timeScale = new TimeOx(_currentInterval, _delCoast);
 
 			Canvas.SetLeft(_timeScale, 0);
 			Canvas.SetTop(_timeScale, 0);
@@ -132,6 +140,10 @@ namespace CKLDrawing
 		{
 			(_listView.Children[0] as ValueBox).Content =
 				$"{_delCoast} {Constants.TIME_DIMENTIONS_STRINGS[(int)_timeDimention]}\n{_currentInterval}";
+			(_listView.Children[0] as ValueBox).Click += (object sender, RoutedEventArgs e) =>
+			{
+				MessageBox.Show($"{_currentInterval}");
+			};
 		}
 
 		private void ChangeChainsScale(double scale) 
@@ -165,9 +177,8 @@ namespace CKLDrawing
 					intervalMulti /= Constants.TIME_DIMENTIONS_CONVERT[oldDim + i];
 				}
 			}
-			
-			_currentInterval.StartTime *= intervalMulti;
-			_currentInterval.EndTime *= intervalMulti;
+
+			_currentInterval.Scale(intervalMulti);
 
 			return intervalMulti;
 		}
@@ -222,7 +233,8 @@ namespace CKLDrawing
 					if (interval.IsActive) 
 					{
 						_selectedIntervals.Add(interval);
-						MessageBox.Show($"{interval.CurrentInterval}");
+						MessageBox.Show($"{TimeInterval
+							.GetIntervalInAnotherDemention(interval.CurrentInterval, _ckl.Dimention, _timeDimention)}");
 					} 
 					else _selectedIntervals.Remove(interval);
 
