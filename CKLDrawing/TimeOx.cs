@@ -88,13 +88,13 @@ namespace CKLDrawing
             double startPos = Constants.Dimentions.FIRST_DEL_START;
             double sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
 
-            double total = _interval.Duration;
+            double end = _interval.EndTime;
 
             int i = 0;
-            double val = 0;
+            double val = _interval.StartTime;
 
             Section section;
-            while (val <= total)
+            while (val <= end)
             {
 
                 section = new Section(val);
@@ -118,7 +118,7 @@ namespace CKLDrawing
                 val += _delCoast;
 				sectionHeight = Constants.Dimentions.SECTION_HEIGHT;
 				
-                if (val <= total) 
+                if (val <= end) 
                 {
 					startPos += Constants.Dimentions.DEL_WIDTH;
 				}

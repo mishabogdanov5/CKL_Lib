@@ -1,9 +1,12 @@
-﻿namespace CKLLib
+﻿using System.Timers;
+
+namespace CKLLib
 {
     public class Pair
     {
         public object FirstValue { get; set; }
         public object? SecondValue { get; set; }
+        public object? ThirdValue { get; set; }
 
         public Pair() { }
 		public Pair(object firstValue)
@@ -15,7 +18,10 @@
             SecondValue = secondValue;
         }
 
-       
+        public Pair(object firstValue, object secondValue, object thirdValue) : this(firstValue, secondValue) 
+        {
+            ThirdValue = thirdValue;
+        }
 
         public override bool Equals(object? obj)
         {
@@ -24,7 +30,10 @@
             Pair? pair = obj as Pair;
             if (pair == null) return false;
 
-            return ToString().Equals(pair.ToString());
+            if (SecondValue == null) return pair.FirstValue.Equals(FirstValue) && pair.SecondValue == null;
+            else if (ThirdValue == null) return pair.FirstValue.Equals(FirstValue) && pair.SecondValue.Equals(SecondValue);
+
+			return pair.FirstValue.Equals(FirstValue) && pair.SecondValue.Equals(SecondValue) && pair.ThirdValue.Equals(ThirdValue);
         }
 
         public override int GetHashCode()
@@ -34,9 +43,13 @@
 
         public override string ToString()
         {
-            if (SecondValue != null)
+            if (ThirdValue != null) 
+                return $"({FirstValue.ToString()};{SecondValue!.ToString()};{ThirdValue.ToString()})";
+			
+            else if (SecondValue != null)
                 return $"({FirstValue.ToString()};{SecondValue.ToString()})";
-            return FirstValue.ToString();
+           
+            return FirstValue.ToString()!;
         }
     }
 }

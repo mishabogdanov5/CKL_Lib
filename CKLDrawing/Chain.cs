@@ -145,6 +145,12 @@ namespace CKLDrawing
             double start = vectorBegin / _interval.Duration;
             double end = vectorEnd / _interval.Duration;
 
+            if (interval.Equals(TimeInterval.ZERO)) 
+            {
+                start = 0;
+                end = 0;
+            }
+
             return new Pair(start, end);
         }
     }
