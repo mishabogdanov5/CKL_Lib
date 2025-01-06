@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CKLLib
 {
-    public class TimeInterval : IComparable<TimeInterval>
+    public class TimeInterval : IComparable<TimeInterval>, ICloneable
     {
         public double StartTime { get => _startTime; 
             set {
@@ -58,7 +58,7 @@ namespace CKLLib
 
         public override string ToString()
         {
-            return $"[{_startTime.ToString()}; {_endTime.ToString()}]";
+            return $"[{Math.Round(_startTime, 2).ToString()}; {Math.Round(_endTime, 2).ToString()}]";
         }
 
         public int CompareTo(TimeInterval? other)
@@ -68,6 +68,12 @@ namespace CKLLib
             return Duration.CompareTo(other.Duration);
         }
 
-        public static readonly TimeInterval ZERO = new TimeInterval(0, 0);
+		public object Clone()
+		{
+            TimeInterval newInterval = new TimeInterval(StartTime, EndTime);
+            return newInterval;
+		}
+
+		public static readonly TimeInterval ZERO = new TimeInterval(0, 0);
     }
 }

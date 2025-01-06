@@ -422,10 +422,10 @@ namespace CKLLib
                 {
                     if (!IsIntervalsEmpty(item.Intervals)) 
                         relation.Add(new RelationItem(item.Value, 
-                            IntervalsInversion(item.Intervals, ckl.GlobalInterval), item.Info));
+                            IntervalsInversion(item.Intervals, ckl.GlobalInterval)));
 
                     else relation.Add(new RelationItem(item.Value, new List<TimeInterval>()
-                    { ckl.GlobalInterval }, item.Info));
+                    { ckl.GlobalInterval}));
                 }
 
                 string newPath = GetNewFilePath(ckl.FilePath, "inversion_"+Path.GetFileName(ckl.FilePath));
@@ -433,13 +433,135 @@ namespace CKLLib
                 return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
 			}
 
+            public static CKL Tranposition(CKL ckl) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+                foreach (Pair p in ckl.Source) if (p.SecondValue == null) throw new ArgumentException("Cannot use with unary CKL");
+
+                HashSet<Pair> source = new HashSet<Pair>();
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+                Pair pair;
+                RelationItem currentItem;
+
+                foreach (RelationItem item in ckl.Relation) 
+                {
+                    pair = new Pair(item.Value.SecondValue, item.Value.FirstValue);
+                    source.Add(pair);
+                    
+                    currentItem = item.Clone() as RelationItem;
+                    currentItem.Value = pair;
+                    relation.Add(currentItem);
+                }
+
+				string newPath = GetNewFilePath(ckl.FilePath, "transposition_" + Path.GetFileName(ckl.FilePath));
+
+                return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, source, relation);
+			}
+
+
+            private static List<TimeInterval> TruncateIntervals(List<TimeInterval> intervals, Func<TimeInterval, bool> selector) 
+            {
+                List<TimeInterval> result = new List<TimeInterval>();
+                foreach (TimeInterval interval in intervals) if (selector(interval)) result.Add(interval);
+
+                if (result.Count == 0) result.Add(TimeInterval.ZERO);
+
+                return result;
+            }
+
+            public static CKL TruncationHighLimit(CKL ckl, double duration) 
+            {
+                if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+                foreach (RelationItem item in ckl.Relation) 
+                {
+                    relation.Add(new RelationItem(item.Value, TruncateIntervals(item.Intervals, 
+                        interval => interval.Duration <= duration), item.Info));
+                }
+
+				string newPath = GetNewFilePath(ckl.FilePath, "truncation_low_" + Path.GetFileName(ckl.FilePath));
+
+                return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
+			}
+
+            public static CKL TruncationLowLimit(CKL ckl, double duration) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+				HashSet<RelationItem> relation = new HashSet<RelationItem>();
+
+				foreach (RelationItem item in ckl.Relation)
+				{
+					relation.Add(new RelationItem(item.Value, TruncateIntervals(item.Intervals,
+						interval => interval.Duration >= duration), item.Info));
+				}
+
+				string newPath = GetNewFilePath(ckl.FilePath, "truncation_high_" + Path.GetFileName(ckl.FilePath));
+
+				return new CKL(newPath, ckl.GlobalInterval, ckl.Dimention, ckl.Source, relation);
+			}
+
+
+            //Algebra Operation
+
+            private static void TryThrowAlgebraException(CKL ckl1, CKL ckl2) 
+            {
+				if (ckl1 == null) throw new ArgumentNullException("CKL object con not be null");
+				if (ckl2 == null) throw new ArgumentNullException("CKL object con not be null");
+
+				if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
+				if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
+
+                foreach (Pair p1 in ckl1.Source) 
+                {
+                    if (!ckl2.Source.Any(el => el.FirstValue.ToString().Equals(p1.SecondValue.ToString()))) throw new ArgumentException();
+                }
+			}
+
+            public static CKL Composition(CKL ckl1, CKL ckl2) 
+            {
+                TryThrowAlgebraException(ckl1, ckl2);
+
+                HashSet<Pair> source = new HashSet<Pair>();
+                HashSet<RelationItem> relation = new HashSet<RelationItem>();
+                Pair p;
+
+                foreach (RelationItem item1 in ckl1.Relation) 
+                {
+                    foreach (RelationItem item2 in ckl2.Relation) 
+                    {
+                        if (item2.Value.FirstValue.ToString().Equals(item1.Value.SecondValue.ToString()))
+                        {
+                            p = new Pair(item1.Value.FirstValue, item1.Value.SecondValue, item2.Value.SecondValue);
+                            source.Add(p);
+                            relation.Add(new RelationItem(p, IntervalsIntersection(item1.Intervals, item2.Intervals)));
+                        }
+                    }
+                }
+
+				string file1 = Path.GetFileName(ckl1.FilePath);
+				string file2 = Path.GetFileName(ckl2.FilePath);
+
+				string name1 = file1.Substring(0, file1.LastIndexOf('.'));
+				string name2 = file2.Substring(0, file2.LastIndexOf('.'));
+
+				string newName = "composition_" + name1 + "_" + name2;
+				string newFilePath = GetNewFilePath(ckl1.FilePath, newName);
+
+				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, source, relation);
+			}
+
+
             //Semantic operations
             private static void TryThrowSemanticException(CKL ckl1, CKL ckl2) 
             {
-                if (ckl1 == null) throw new ArgumentNullException();
-                if (ckl2 == null) throw new ArgumentNullException();
-                
-                if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
+				if (ckl1 == null) throw new ArgumentNullException("CKL object con not be null");
+				if (ckl2 == null) throw new ArgumentNullException("CKL object con not be null");
+
+				if (!ckl1.GlobalInterval.Equals(ckl2.GlobalInterval)) throw new ArgumentException();
                 if (!ckl1.Dimention.Equals(ckl2.Dimention)) throw new ArgumentException();
                 
                 foreach (Pair p in ckl1.Source) 
