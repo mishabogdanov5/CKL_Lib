@@ -30,10 +30,7 @@ namespace CKLLib
             Pair? pair = obj as Pair;
             if (pair == null) return false;
 
-            if (SecondValue == null) return pair.FirstValue.Equals(FirstValue) && pair.SecondValue == null;
-            else if (ThirdValue == null) return pair.FirstValue.Equals(FirstValue) && pair.SecondValue.Equals(SecondValue);
-
-			return pair.FirstValue.Equals(FirstValue) && pair.SecondValue.Equals(SecondValue) && pair.ThirdValue.Equals(ThirdValue);
+            return pair.ToString().Equals(ToString());
         }
 
         public override int GetHashCode()

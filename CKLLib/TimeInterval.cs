@@ -26,6 +26,12 @@ namespace CKLLib
         private double _startTime;
         private double _endTime;
 
+        public void Scale(double multi) 
+        {
+            _startTime*= multi;
+            _endTime*= multi;
+        }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
         public double Duration
         {
@@ -75,5 +81,32 @@ namespace CKLLib
 		}
 
 		public static readonly TimeInterval ZERO = new TimeInterval(0, 0);
+        public static TimeInterval GetIntervalInAnotherDemention(TimeInterval interval, TimeDimentions oldDimention, TimeDimentions newDimention) 
+        {
+			int oldDim = (int)oldDimention;
+			int newDim = (int)newDimention;
+			double intervalMulti = 1;
+
+            TimeInterval res = interval.Clone() as TimeInterval;
+
+			if (oldDim > newDim)
+			{
+				for (int i = 0; i < oldDim - newDim; i++)
+				{
+					intervalMulti *= Constants.TIME_DIMENTIONS_CONVERT[newDim + i];
+				}
+
+			}
+			else
+			{
+				for (int i = 0; i < newDim - oldDim; i++)
+				{
+					intervalMulti /= Constants.TIME_DIMENTIONS_CONVERT[oldDim + i];
+				}
+			}
+			
+            res.Scale(intervalMulti);
+            return res;
+		}
     }
 }
