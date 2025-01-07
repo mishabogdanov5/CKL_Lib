@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace CKLLib
 {
@@ -64,6 +65,82 @@ namespace CKLLib
 
                 return new CKL(newPath, newInterval, ckl.Dimention, ckl.Source, items);
             }
+
+            public static CKL LeftPrecedence(CKL ckl, TimeInterval interval, double t) 
+            {
+                if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, $"left_precedence_{t}_" + name);
+
+				if (interval.StartTime - t <= ckl.GlobalInterval.StartTime) 
+                    return new CKL(newPath, TimeInterval.ZERO, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
+
+                TimeInterval newInterval = new TimeInterval(ckl.GlobalInterval.StartTime, 
+                    interval.StartTime - t < ckl.GlobalInterval.EndTime ? interval.StartTime - t: ckl.GlobalInterval.EndTime);
+
+                return TimeTransform(ckl, newInterval);
+            }
+
+            public static CKL RightContinuation(CKL ckl, TimeInterval interval, double t) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, $"right_continuation_{t}_" + name);
+
+				if (interval.EndTime + t >= ckl.GlobalInterval.EndTime)
+					return new CKL(newPath, TimeInterval.ZERO, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
+
+				TimeInterval newInterval = 
+                new TimeInterval( 
+    ckl.GlobalInterval.StartTime > interval.EndTime + t? ckl.GlobalInterval.StartTime: interval.EndTime+t,
+    ckl.GlobalInterval.EndTime);
+
+				return TimeTransform(ckl, newInterval);
+			}
+
+            public static CKL LeftContinuation(CKL ckl, TimeInterval interval, double t) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, $"left_continuation_{t}_" + name);
+
+				if (interval.StartTime + t >= ckl.GlobalInterval.EndTime)
+					return new CKL(newPath, TimeInterval.ZERO, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
+
+				TimeInterval newInterval =
+				new TimeInterval(
+	ckl.GlobalInterval.StartTime > interval.StartTime + t ? ckl.GlobalInterval.StartTime : interval.StartTime + t,
+	ckl.GlobalInterval.EndTime);
+
+                return TimeTransform(ckl, newInterval);
+			}
+
+            public static CKL RightPrecedence(CKL ckl, TimeInterval interval, double t) 
+            {
+				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
+
+				string file = Path.GetFileName(ckl.FilePath);
+				string name = file.Substring(0, file.LastIndexOf('.'));
+
+				string newPath = GetNewFilePath(ckl.FilePath, $"right_precedence_{t}_" + name);
+
+				if (interval.EndTime - t <= ckl.GlobalInterval.StartTime)
+					return new CKL(newPath, TimeInterval.ZERO, ckl.Dimention, ckl.Source, new HashSet<RelationItem>());
+
+				TimeInterval newInterval = new TimeInterval(ckl.GlobalInterval.StartTime,
+					interval.EndTime - t < ckl.GlobalInterval.EndTime ? interval.EndTime - t : ckl.GlobalInterval.EndTime);
+
+				return TimeTransform(ckl, newInterval);
+			}
 
             //Source operations
 
