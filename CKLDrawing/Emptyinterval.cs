@@ -10,7 +10,8 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-    public class Emptyinterval: Button
+    public class Emptyinterval: Button // компонент интервала, на котором
+                                       // индикаторная функция равна 0
     {
         public TimeInterval Duration { get => _duration; private set { } }
 		new public Chain? Parent { get; }

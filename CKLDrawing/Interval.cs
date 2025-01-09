@@ -5,7 +5,7 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-    public class Interval : Button
+    public class Interval : Button // компонент инетрвала истинности индикаторной функции
     {
         public TimeInterval CurrentInterval { get => _interval; }
         public bool IsActive { get => _isActive; }

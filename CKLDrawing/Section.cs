@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace CKLDrawing
 {
-    public class Section: Button
+    public class Section: Button // компонент деления на шкале времени
     {
         public DateTime Date { get => _date; }
         public double Value { get => _value;  }

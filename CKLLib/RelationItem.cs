@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace CKLLib
 {
-    public class RelationItem: ICloneable
+    public class RelationItem: ICloneable // Элемент динамического отношения
     {
-        public Pair Value { get; set; }
-        public List<TimeInterval> Intervals { get; set; }
+        public Pair Value { get; set; } // Элемент из множества, задающего отношение
+        public List<TimeInterval> Intervals { get; set; } // Интервалы истинности
+                                                          // индикаторной функции элемента
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public object? Info { get; set; }

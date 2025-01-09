@@ -10,7 +10,7 @@ using CKLLib;
 using System.Windows.Automation.Provider;
 namespace CKLDrawing
 {
-	public class ValueBox: Button
+	public class ValueBox: Button // компонент элемента отношения
 	{
 		public Chain? CurrentChain { get => _chain; }
 		public bool IsActive { get => _isActive; }

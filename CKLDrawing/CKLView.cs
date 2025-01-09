@@ -12,7 +12,7 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-	public class CKLView : DockPanel
+	public class CKLView : DockPanel // компонент диаграммы Ганта
 	{
 		public CKL Ckl { get => _ckl; }
 		public List<Chain> Chains { get => _chains; }
