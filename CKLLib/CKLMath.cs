@@ -12,7 +12,9 @@ namespace CKLLib
 {
     namespace Operations 
     {
-        public static class CKLMath
+        public static class CKLMath // Статический класс, содержащий
+                                    // операции алгебры 
+                                    // Создан на подобии класса Math в С#
         {
 
             private static string GetNewFilePath(string path, string newName)
@@ -81,7 +83,11 @@ namespace CKLLib
                 TimeInterval newInterval = new TimeInterval(ckl.GlobalInterval.StartTime, 
                     interval.StartTime - t < ckl.GlobalInterval.EndTime ? interval.StartTime - t: ckl.GlobalInterval.EndTime);
 
-                return TimeTransform(ckl, newInterval);
+                
+                CKL res = TimeTransform(ckl, newInterval);
+                res.FilePath = newPath;
+
+                return res;
             }
 
             public static CKL RightContinuation(CKL ckl, TimeInterval interval, double t) 
@@ -101,7 +107,10 @@ namespace CKLLib
     ckl.GlobalInterval.StartTime > interval.EndTime + t? ckl.GlobalInterval.StartTime: interval.EndTime+t,
     ckl.GlobalInterval.EndTime);
 
-				return TimeTransform(ckl, newInterval);
+				CKL res = TimeTransform(ckl, newInterval);
+                res.FilePath = newPath;
+
+                return res;
 			}
 
             public static CKL LeftContinuation(CKL ckl, TimeInterval interval, double t) 
@@ -121,7 +130,10 @@ namespace CKLLib
 	ckl.GlobalInterval.StartTime > interval.StartTime + t ? ckl.GlobalInterval.StartTime : interval.StartTime + t,
 	ckl.GlobalInterval.EndTime);
 
-                return TimeTransform(ckl, newInterval);
+                CKL res = TimeTransform(ckl, newInterval);
+                res.FilePath = newPath;
+
+                return res;
 			}
 
             public static CKL RightPrecedence(CKL ckl, TimeInterval interval, double t) 
@@ -139,7 +151,10 @@ namespace CKLLib
 				TimeInterval newInterval = new TimeInterval(ckl.GlobalInterval.StartTime,
 					interval.EndTime - t < ckl.GlobalInterval.EndTime ? interval.EndTime - t : ckl.GlobalInterval.EndTime);
 
-				return TimeTransform(ckl, newInterval);
+				CKL res = TimeTransform(ckl, newInterval);
+                res.FilePath = newPath;
+
+                return res;
 			}
 
             //Source operations
@@ -275,7 +290,7 @@ namespace CKLLib
                 return res;
             }
 
-            public static CKL Union(CKL ckl1, CKL ckl2)
+            public static CKL Union(CKL ckl1, CKL ckl2) // объединение динамических отношений
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
@@ -337,7 +352,7 @@ namespace CKLLib
                 return res;
             }
 
-            public static CKL Intersection(CKL ckl1, CKL ckl2)
+            public static CKL Intersection(CKL ckl1, CKL ckl2) // пересечение динамических отношений
             {
                 TryThrowBinaryExceptions(ckl1, ckl2);
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();
@@ -503,7 +518,7 @@ namespace CKLLib
 				return new CKL(newFilePath, ckl1.GlobalInterval, ckl1.Dimention, ckl1.Source, relation);
             }
 
-            public static CKL Inversion(CKL ckl) 
+            public static CKL Inversion(CKL ckl) // Инверсия отношения
             {
 				if (ckl == null) throw new ArgumentNullException("CKL object con not be null");
                 HashSet<RelationItem> relation = new HashSet<RelationItem>();

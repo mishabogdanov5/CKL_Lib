@@ -4,7 +4,8 @@ using CKLLib;
 
 namespace CKLDrawing
 {
-    public class Chain : StackPanel
+    public class Chain : StackPanel // компонент отображения значений индикаторной функции
+                                    // элемента отношения на общем интервале времени
     {
         public RelationItem Item { get => _item; }
         public List<Interval> Intervals { get => _intervals; }

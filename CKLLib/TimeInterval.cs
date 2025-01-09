@@ -5,18 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using CKLLib.Operations;
 
-namespace CKLLib
+namespace CKLLib 
 {
-    public class TimeInterval : IComparable<TimeInterval>, ICloneable
+    public class TimeInterval : IComparable<TimeInterval>, ICloneable // временной интервал
     {
-        public double StartTime { get => _startTime; 
+        public double StartTime { get => _startTime;  // время начала
             set {
                 if (value <= _endTime) _startTime = value;
                 else _startTime = _endTime;
             } 
         }
-        public double EndTime { get => _endTime; 
+        public double EndTime { get => _endTime; // время конца
             set { 
                 if (value >= _startTime) _endTime = value;
                 else _endTime = _startTime;
@@ -104,7 +105,7 @@ namespace CKLLib
 					intervalMulti /= Constants.TIME_DIMENTIONS_CONVERT[oldDim + i];
 				}
 			}
-			
+
             res.Scale(intervalMulti);
             return res;
 		}

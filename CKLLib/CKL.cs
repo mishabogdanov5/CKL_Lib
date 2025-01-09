@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CKLLib.Operations;
 
 namespace CKLLib
 {
-    public class CKL
+    public class CKL // объект алгебры динамических отношений
     {
-        public string FilePath { get; set; }
-        public TimeInterval GlobalInterval { get; set; }
-        public TimeDimentions Dimention { get; set; }
-        public HashSet<Pair> Source { get; set; }
-        public HashSet<RelationItem> Relation { get; set; }
+        public string FilePath { get; set; } // путь файла, в котором записан объект
+        public TimeInterval GlobalInterval { get; set; } // интервал времени,
+                                                         // на котором определено отношение
+        public TimeDimentions Dimention { get; set; } // еденица измерения времени интервала
+        public HashSet<Pair> Source { get; set; } // множество, на котором задано отношение
+        public HashSet<RelationItem> Relation { get; set; } // динамическое отношение
         
         public CKL()
         {

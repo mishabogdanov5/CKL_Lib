@@ -13,7 +13,7 @@ using System.IO.Packaging;
 
 namespace CKLDrawing
 {
-    public class TimeOx : Canvas
+    public class TimeOx : Canvas // компонент шкалы времени
     {
         public List<Section> Sections { get => _sections; }
         public Button Ox { get => _ox; }
@@ -76,7 +76,7 @@ namespace CKLDrawing
             ox.Width = Width;
             ox.Height = Constants.Dimentions.SECTION_WIDTH;
             ox.BorderThickness = new Thickness(0);
-            Canvas.SetLeft(ox, /*Constants.Dimentions.VALUE_BOX_WIDTH*/ 0);
+            Canvas.SetLeft(ox, 0);
             Canvas.SetTop(ox, Constants.Dimentions.TIME_OX_HEIGHT / 2);
 
             Children.Add(ox);
@@ -166,8 +166,6 @@ namespace CKLDrawing
             Canvas.SetBottom(label, 2.5);
             _sectionsText.Children.Add(label);
 
-           /*double width = label.Width;
-            Canvas.SetLeft(label, startPos - width/2);*/
             label.Margin = new Thickness(0, 0, 0, 0);
         }
 
