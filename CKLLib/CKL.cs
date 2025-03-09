@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CKLLib.Operations;
 
@@ -10,7 +11,8 @@ namespace CKLLib
 {
     public class CKL // объект алгебры динамических отношений
     {
-        public string FilePath { get; set; } // путь файла, в котором записан объект
+		[JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+		public string FilePath { get; set; } // путь файла, в котором записан объект
         public TimeInterval GlobalInterval { get; set; } // интервал времени,
                                                          // на котором определено отношение
         public TimeDimentions Dimention { get; set; } // еденица измерения времени интервала
